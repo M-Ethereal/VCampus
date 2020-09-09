@@ -16,7 +16,7 @@ public class DbHelper {
     DbHelper()
     {
         try {
-            connection = DriverManager.getConnection("jdbc:ucanaccess://./db/database.accdb","","");
+            connection = DriverManager.getConnection("jdbc:ucanaccess://./db/VCampus_Database.accdb","","");
         }
         catch(Exception e)
         {
@@ -28,15 +28,15 @@ public class DbHelper {
     {
         try {
             //获取Access数据库连接(Connection)
-            this.connection = DriverManager.getConnection("jdbc:ucanaccess://./db/database.accdb", user, pwd);
+            this.connection = DriverManager.getConnection("jdbc:ucanaccess://./db/VCampus_Database.accdb", user, pwd);
             System.out.println("数据库连接成功");
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
         return this.connection;
     }
-    public static void main(String[] args) {
-        DbHelper dbHelper =new DbHelper();
-        Connection connection= dbHelper.getAccessConnection("", "");
-    }
+//    public static void main(String[] args) {
+//        DbHelper dbHelper =new DbHelper();
+//        Connection connection= dbHelper.getAccessConnection("", "");
+//    }
 }

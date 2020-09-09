@@ -2,16 +2,29 @@ package vo;
 
 import java.io.Serializable;
 
-abstract public class User implements Serializable {
+public class User implements Serializable {
     private static final long serialVersionUID = 50000;
-    private int id;
+    private String id;
     private String pwd;
     private int userType;	//0-student  1-teacher  2-admin  3-worker
 
-    public int getId() {
+    //test
+    public User(){
+        this.setId("");
+        this.setpwd("");
+        this.setUserType(0);
+    }
+
+    public User(String userId, String userPwd) {
+        this.setId(userId);
+        this.setpwd(userPwd);
+        this.setUserType(0);
+    }
+
+    public String getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

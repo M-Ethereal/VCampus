@@ -28,10 +28,10 @@ public class Server implements Runnable{
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) {
         Server server = new Server();
         server.run();
     }
-
 
 }
