@@ -1,5 +1,5 @@
 package server.socket;
-
+//服务器端接收响应
 import java.net.ServerSocket;
 import java.net.Socket;
 
