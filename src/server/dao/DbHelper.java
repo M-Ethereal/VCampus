@@ -1,5 +1,5 @@
 package server.dao;
-
+%实现数据库的连接
 import java.sql.Connection;
 import java.sql.DriverManager;
 
