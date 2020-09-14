@@ -12,74 +12,6 @@ public class StudentDao {
     private PreparedStatement sql = null;
     private Connection conn = access.connection;
     private ResultSet rs=null;
-
-    public Student query(int uID )
-    {
-        Student star=new Student();
-        try{
-            String req = "select uName,uNumber,uGrade,uRegister,uCredit,uSex,PhoneNumber,uState from tbl_StudentArchive where uID = '"+uID+"'";
-            sql = conn.prepareStatement(req);
-            rs = sql.executeQuery(req);
-            while(rs.next())
-            {
-                star.setName(rs.getString("uName").trim());
-                star.setNumber(rs.getString("uNumber").trim());
-                star.setSex(rs.getInt("uSex"));
-                star.setGPA(rs.getDouble("uGrade"));
-                star.setCredit(rs.getDouble("uCredit"));
-                star.setPhoneNmuber(rs.getString("PhoneNumber").trim());
-                star.setState(rs.getInt("uState"));
-                star.setRegister(rs.getString("uRegister"));
-            }
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return star;
-    }
-
-
-    public void insert(String uName, String uNumber, int uID, String uRegister,
-                              double uGrade, double uCredit, int uSex, String  PhoneNumber, int uState)
-    {
-        try{
-            sql=conn.prepareStatement("insert into tbl_StudentArchive(uID,uNumber,uName,uGrade,uCredit,uState,PhoneNumber,uSex,uRegister) values('"+uID+"','"+uNumber+"','"+uName+"','"+uGrade+"','"+uCredit+"','"+uState+"','"+PhoneNumber+"','"+uSex+"','"+uRegister+"')");
-            sql.executeUpdate();
-            System.out.println("success!");
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    public void update(String uName, String uNumber, String uRegister,int uID,
-                              double uGrade, double uCredit, int uSex, String  PhoneNumber, int uState)
-    {
-
-        try{
-            sql=conn.prepareStatement("update tbl_StudentArchive set uNumber='"+uNumber+"' ,uName='"+uName+"',uRegister='"+uRegister+"',uGrade='"+uGrade+"',uCredit='"+uCredit+"',PhoneNumber='"+PhoneNumber+"',uState='"+uState+"'  where uID='"+uID+"' ");
-            sql.executeUpdate();
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void delete(int uID)
-    {
-        try{
-            sql=conn.prepareStatement("delete from tbl_StudentArchive where uID ='"+uID+"'");
-            sql.executeUpdate();
-
-        }catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     public Student rsToStudent()
     {
         try
@@ -111,4 +43,76 @@ public class StudentDao {
         }
         return null;
     }
+
+    public Student query(int uID )
+    {
+        Student star=new Student();
+        try{
+            String req = "select uName,uNumber,uGrade,uRegister,uCredit,uSex,PhoneNumber,uState from tbl_StudentArchive where uID = '"+uID+"'";
+            sql = conn.prepareStatement(req);
+            rs = sql.executeQuery(req);
+            star=rsToStudent();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return star;
+    }
+
+
+    public void insert(String uName, String uNumber, int uID, String uRegister,int majorId,
+                              double uGPA, double uCredit, int uSex, String  PhoneNumber, int uState,double uSRTP,int uAge,String DormNum,double uMoney,int uRenown,int campusPosition,int punishmentType)
+    {
+        try{
+            sql=conn.prepareStatement("insert into tbl_StudentArchive(uID,uNumber,uName,uGPA,uCredit,uState,majorId,PhoneNumber,uSex,uRegister,uSRTP,uAge,DormNum,uMoney,uRenown,campusPosition,punishementType) values('"+uID+"','"+uNumber+"','"+uName+"','"+uGPA+"','"+uCredit+"','"+uState+"','"+majorId+"','"+PhoneNumber+"','"+uSex+"','"+uRegister+"','"+uSRTP+"','"+uAge+"','"+DormNum+"','"+uMoney+"','"+uRenown+"','"+campusPosition+"','"+punishmentType+"')");
+            sql.executeUpdate();
+            System.out.println("success!");
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateForTeacher(String uName, String uNumber, String uRegister,int uID,int majorId,
+                              double uGPA, double uCredit, int uSex, String  PhoneNumber, int uState,double uSRTP,int uAge,String DormNum,double uMoney,int uRenown,int campusPosition,int punishmentType)
+    {
+
+        try{
+            sql=conn.prepareStatement("update tbl_StudentArchive set majorID='"+majorId+"' ,  uNumber='"+uNumber+"' ,uName='"+uName+"',uRegister='"+uRegister+"',uGPA='"+uGPA+"',uCredit='"+uCredit+"',PhoneNumber='"+PhoneNumber+"',uState='"+uState+"', uSRTP='"+uSRTP+"',uAge='"+uAge+"',DormNum='"+DormNum+"',uMoney='"+uMoney+"',uRenown='"+uRenown+"', campusPosition='"+campusPosition+"',punishmentType='"+punishmentType+"'  where uID='"+uID+"' ");
+            sql.executeUpdate();
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+    
+    public void updateForStudent(int uID,String  PhoneNumber,int majorId, int uAge,String DormNum, int campusPosition)
+{
+
+	try{
+	sql=conn.prepareStatement("update tbl_StudentArchive set PhoneNumber='"+PhoneNumber+" ,majorId='"+majorId+"',DormNum='"+DormNum+"',campusPosition='"+campusPosition+"' where uID='"+uID+"' ");
+	sql.executeUpdate();
+	}catch (SQLException e)
+	{
+	e.printStackTrace();
+	}
+	
+}
+
+    public void delete(int uID)
+    {
+        try{
+            sql=conn.prepareStatement("delete from tbl_StudentArchive where uID ='"+uID+"'");
+            sql.executeUpdate();
+
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
 }

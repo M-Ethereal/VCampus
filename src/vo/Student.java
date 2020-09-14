@@ -18,7 +18,7 @@ public class Student extends User implements Serializable {
     private String dormNum;
     private Integer lendBooksNum;
     private double cardBalance;
-    private String renown;//商家信誉等级
+    private Integer renown;//商家信誉等级
     private Integer campusPosition;
     private Integer punishment;//处分类型，0-没有，1-警告，2-通报批评，3-留校察看，4-劝退，5-开除
 
@@ -40,7 +40,7 @@ public class Student extends User implements Serializable {
         this.setDormNum("------");
         this.setLendBooksNum(0);
         this.setCardBalance(0.0);
-        this.setRenown("0.0");
+        this.setRenown(100);
         this.setCampusPosition(0);
         this.setPunishment(0);
     }
@@ -165,11 +165,11 @@ public class Student extends User implements Serializable {
         this.cardBalance = cardBalance;
     }
 
-    public String getRenown() {
+    public Integer getRenown() {
         return renown;
     }
 
-    public void setRenown(String renown) {
+    public void setRenown(Integer renown) {
         this.renown = renown;
     }
 
