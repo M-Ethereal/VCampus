@@ -49,8 +49,6 @@ public class ServerSocketThread implements Runnable{
                             serverResponse.setErrorMessage("Password is wrong");
                             serverResponse.setMessageType(Constants.operFeedback);
                         }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
                     } finally {
                         ObjectOutputStream response = new ObjectOutputStream(clientSocket.getOutputStream());
                         response.writeObject(serverResponse);

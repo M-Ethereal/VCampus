@@ -62,7 +62,7 @@ public class AdminDao {
 //        return false;
 //    }
 
-    public Admin queryById(String AdminID) throws SQLException {
+    public Admin query(String AdminID) throws SQLException {
         String sql= "SELECT * FROM Admin where adminId="+ "'"+ AdminID +"'";
         stmt = access.connection.prepareStatement(sql);
         rs = stmt.executeQuery();
