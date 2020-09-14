@@ -1,5 +1,6 @@
 package server.dao;
-
+//实现数据库的连接
+//dao层的包只需直接调用一次DbHelper即可
 import java.sql.Connection;
 import java.sql.DriverManager;
 
