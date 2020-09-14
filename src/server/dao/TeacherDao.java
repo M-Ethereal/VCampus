@@ -77,7 +77,7 @@ public class TeacherDao {
         return false;
     }
 
-    public Teacher queryById(String TeacherID) throws SQLException {
+    public Teacher query(String TeacherID) throws SQLException {
         String sql= "SELECT * FROM Teacher where userId="+ "'"+ TeacherID +"'";
         stmt = access.connection.prepareStatement(sql);
         rs = stmt.executeQuery();

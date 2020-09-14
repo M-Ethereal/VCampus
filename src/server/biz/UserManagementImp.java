@@ -3,6 +3,7 @@ package server.biz;
 import server.dao.*;
 import vo.*;
 
+import java.sql.SQLException;
 import java.util.Random;
 
 public class UserManagementImp implements UserManagement{
@@ -13,18 +14,17 @@ public class UserManagementImp implements UserManagement{
     private RetailerDao daor = new RetailerDao();
 
     @Override
-    public boolean checkPwd(String id, String pwd,int userType)
-    {
+    public boolean checkPwd(String id, String pwd,int userType) throws SQLException {
         if(userType==1) {
             Teacher aim=daot.query(id);
-            if(aim.getPwd().equals(pwd))
+            if(aim.getpwd().equals(pwd))
                 return true;
             else
                 return false;
         }
         else if(userType==0){
             Student aim=daos.query(id);
-            if(aim.getPwd().equals(pwd))
+            if(aim.getpwd().equals(pwd))
                 return true;
             else
                 return false;
