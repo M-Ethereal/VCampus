@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class ShopRecord implements Serializable { //商店购买记录
     private static final long serialVersionUID = 50000;
-    private String dID,dName,dsID,dbID,dDate,dNum;
-    boolean dDelivery;
+    public String dID,dName,dsID,dbID,dDate,dNum;
+    public boolean dDelivery;
     public void setdID(String dID) {
         this.dID=dID;
     }

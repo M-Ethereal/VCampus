@@ -1,6 +1,7 @@
 package server.dao;
 
 import java.sql.*;
+import vo.ShopRecord;
 
 public class ShopRecordDao {
 
@@ -9,73 +10,79 @@ public class ShopRecordDao {
     private PreparedStatement sql = null;
     private ResultSet res = null;
 
-    public void sRecordQuery(String ID) {//搜索卖家记录
+    public ShopRecord sRecordQuery(ShopRecord rec) {//搜索卖家记录
         try {
-            sql=con.prepareStatement("select* from tbl_Record where dsID=?");
-            sql.setString(1, ID);
+            sql=con.prepareStatement("select* from ShopRecord where dsID=?");
+            sql.setString(1, rec.dsID);
             res=sql.executeQuery();
             while(res.next()) {
-                String name=res.getString("dName");//名称
-                String bID=res.getString("dbID");//买家ID
-                boolean delivery=res.getBoolean("dDelivery");//是否配送
-                String date=res.getString("dDate");//交易时间
-                String num=res.getString("dNum");//交易数量
-                System.out.println(name+" "+bID+" "+delivery+" "+date+" "+num);
+                return resToRecord();
             }
         }catch(Exception e) {
             e.printStackTrace();
         }
+		return null;
     }
-    public void bRecordQuery(String ID) {//搜索买家记录
+    public ShopRecord bRecordQuery(ShopRecord rec) {//搜索买家记录
         try {
-            sql=con.prepareStatement("select* from tbl_Record where dbID=?");
-            sql.setString(1, ID);
+            sql=con.prepareStatement("select* from ShopRecord where dbID=?");
+            sql.setString(1, rec.dbID);
             res=sql.executeQuery();
             while(res.next()) {
-                String name=res.getString("dName");//名称
-                String sID=res.getString("dsID");//卖家ID
-                boolean delivery=res.getBoolean("dDelivery");//是否配送
-                String date=res.getString("dDate");//交易时间
-                String num=res.getString("dNum");//交易数量
-                System.out.println(name+" "+sID+" "+delivery+" "+date+" "+num);
+                return resToRecord();
             }
         }catch(Exception e) {
             e.printStackTrace();
         }
+		return null;
     }
-    public void InsertRecord(String name,String sID,String bID,
-                             boolean delivery,String date,String num) {//插入购买记录
+    public void InsertRecord(ShopRecord rec) {//插入购买记录
         try {
-            sql=con.prepareStatement("insert into tbl_Record values(?,?,?,?,?,?,?)");
+            sql=con.prepareStatement("insert into ShopRecord values(?,?,?,?,?,?,?)");
             sql.setString(1, "1");
-            sql.setString(2,name);
-            sql.setString(3,sID);
-            sql.setString(4,bID);
-            sql.setBoolean(5,delivery);
-            sql.setString(6, date);
-            sql.setString(7, num);
+            sql.setString(2,rec.dName);
+            sql.setString(3,rec.dsID);
+            sql.setString(4,rec.dbID);
+            sql.setBoolean(5,rec.dDelivery);
+            sql.setString(6,rec.dDate);
+            sql.setString(7,rec.dNum);
             sql.executeUpdate();
         }catch(Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void DeletesRecord(String ID) {
+    public void DeletesRecord(ShopRecord rec) {
         try {
-            sql=con.prepareStatement("delete from tbl_Record where dsID=?");
-            sql.setString(1,ID);
+            sql=con.prepareStatement("delete from ShopRecord where dsID=?");
+            sql.setString(1,rec.dsID);
             sql.executeUpdate();
         }catch(Exception e) {
             e.printStackTrace();
         }
     }
-    public void DeletebRecord(String ID) {
+    public void DeletebRecord(ShopRecord rec) {
         try {
-            sql=con.prepareStatement("delete from tbl_Record where dbID=?");
-            sql.setString(1,ID);
+            sql=con.prepareStatement("delete from ShopRecord where dbID=?");
+            sql.setString(1,rec.dbID);
             sql.executeUpdate();
         }catch(Exception e) {
             e.printStackTrace();
         }
+    }
+    public ShopRecord resToRecord() {
+    	try {
+    		ShopRecord rec=new ShopRecord();
+    		rec.setdName(res.getString("dName"));
+    		rec.setdsID(res.getString("dsID"));
+    		rec.setdID(res.getString("dbID"));
+    		rec.setdDate(res.getString("dDate"));
+    		rec.setdDelivery(res.getBoolean("dDelivery"));
+    		rec.setdNum(res.getString("dNum"));
+    		rec.setdID(res.getString("dID"));
+    	}catch(Exception e) {
+            e.printStackTrace();
+        }
+		return null;
     }
 }

@@ -4,29 +4,42 @@ import java.io.Serializable;
 
 public class Goods implements Serializable {
 	private static final long serialVersionUID = 50000;
-	private String gID,gName,gPrice,gTag,gIntroduction,gSID,gBID;
-	private boolean gDelivery;
+	public String gID,gName,gPrice,gTag,gIntroduction,gStore;
 
-	public Goods(String gID, String gName, String gPrice, String gTag, String gIntroduction, boolean gDelivery, String gSID, String gBID) {
+	public void setgID(String gID) {
 		this.gID=gID;
+	}
+	public String getgID() {
+		return gID;
+	}
+	public void setgName(String gName) {
 		this.gName=gName;
+	}
+	public String getgName() {
+		return gName;
+	}
+	public void setgPrice(String gPrice) {
 		this.gPrice=gPrice;
+	}
+	public String getgPrice() {
+		return gPrice;
+	}
+	public void setgTag(String gTag) {
 		this.gTag=gTag;
+	}
+	public String getgTag() {
+		return gTag;
+	}
+	public void setgIntroduction(String gIntroduction) {
 		this.gIntroduction=gIntroduction;
-		this.gDelivery=gDelivery;
-		this.gSID=gSID;
-		this.gBID=gBID;
 	}
-
-	public void setgID() {
-		
+	public String getgIntroduction() {
+		return gIntroduction;
 	}
-
-	public void getgID() {
-		
+	public void setgStore(String gStore) {
+		this.gStore=gStore;
 	}
-	/*public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}*/
+	public String getgStore() {
+		return gStore;
+	}
 }
