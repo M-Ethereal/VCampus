@@ -6,20 +6,20 @@ public class User implements Serializable {
     private static final long serialVersionUID = 50000;
     private String id;
     private String pwd;
-    private int userType;	//0-student  1-teacher  2-admin  3-worker
+    private int userType;	//0-student  1-teacher  2-doctor  3-retailer  4-admin
 
-    //test
-    public User(){
-        this.setId("");
-        this.setpwd("");
-        this.setUserType(0);
-    }
-
-    public User(String userId, String userPwd) {
-        this.setId(userId);
-        this.setpwd(userPwd);
-        this.setUserType(0);
-    }
+//    //test
+//    public User(){
+//        this.setId("");
+//        this.setpwd("");
+//        this.setUserType(0);
+//    }
+//
+//    public User(String userId, String userPwd) {
+//        this.setId(userId);
+//        this.setpwd(userPwd);
+//        this.setUserType(0);
+//    }
 
     public String getId() {
         return id;

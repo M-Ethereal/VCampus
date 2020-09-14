@@ -4,7 +4,6 @@ import server.biz.UserManagementImp;
 import util.Constants;
 import vo.Login;
 import vo.Message;
-import vo.User;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
