@@ -13,7 +13,7 @@ public class UserManagementImp implements UserManagement{
     private RetailerDao daor = new RetailerDao();
 
     @Override
-    public boolean checkPwd(int id, String pwd,int userType)
+    public boolean checkPwd(String id, String pwd,int userType)
     {
         if(userType==1) {
             Teacher aim=daot.query(id);

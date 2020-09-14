@@ -115,7 +115,7 @@ public class MedicalAdviceDao {
     {
         try
         {
-            MedicalAdvice ma = new MedicalAdvice());
+            MedicalAdvice ma = new MedicalAdvice();
             ma.setqID(rs.getInt("qID"));
             ma.setQueryDept(rs.getString("queryDept"));
             ma.setDocId(rs.getString("docId"));

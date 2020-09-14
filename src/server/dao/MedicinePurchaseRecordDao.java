@@ -1,28 +1,29 @@
 package server.dao;
 
+import vo.MedicinePurchaseRecord;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MedicinePurchaseRecordDao {
     private DbHelper access = new DbHelper();
     private PreparedStatement stmt = null;
     private ResultSet rs = null;
 
-    public boolean insert(Teacher teacher) throws SQLException {
+    public boolean insert(MedicinePurchaseRecord mp) throws SQLException {
         try
         {
-            String sql = "INSERT INTO Teacher (teacherId, teacherName, teacherPwd, userType"
-                    +"age, sex, majorId, title, lendBooksNum) VALUES ( '"
-                    + teacher.getId()
-                    +"' , '"+teacher.getName()
-                    +"' , '"+teacher.getpwd()
-                    +"' , '"+ 1
-                    +"' , '"+teacher.getAge()
-                    +"' , '"+teacher.getSex()
-                    +"' , '"+teacher.getMajorId()
-                    +"' , '"+teacher.getTitle()
-                    +"' , '"+teacher.getLendBooksNum()
+            String sql = "INSERT INTO MedicinePurchaseRecord (purchaseId, purchaseStuId, purchaseMedId, "
+                    + "purchaseDate, purchaseTime, purchaseCost, purchaseNum) VALUES ( '"
+                    + mp.getPurchaseID()
+                    +"' , '"+ mp.getPurchaseStuId()
+                    +"' , '"+ mp.getPurchaseMedId()
+                    +"' , '"+ mp.getPurchaseDate()
+                    +"' , '"+ mp.getPurchaseTime()
+                    +"' , '"+ mp.getPurchaseCost()
+                    +"' , '"+ mp.getPurchaseNum()
                     +"' )";
             stmt = access.connection.prepareStatement(sql);
             stmt.executeUpdate();
@@ -35,75 +36,36 @@ public class MedicinePurchaseRecordDao {
         return false;
     }
 
-    public boolean delete(Teacher teacher) {
-        try{
-            String sql = "DELETE * FROM Teacher WHERE teacherId =?";
-            stmt = access.connection.prepareStatement(sql);
-            stmt.setString(1, teacher.getId());
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean update(Teacher teacher) {
-        try
-        {
-            String sql = "UPDATE Teacher SET teacherName=?,teacherPwd=?,userType=?,"
-                    + "age=?,sex=?,majorId=?,title=?,"
-                    + "lendBooksNum=?"
-                    + "WHERE teacherID=?";
-            stmt=access.connection.prepareStatement(sql);
-            stmt = access.connection.prepareStatement(sql);
-            stmt.setString(1, teacher.getName());
-            stmt.setString(2, teacher.getpwd());
-            stmt.setInt(3, 1);
-            stmt.setInt(4, teacher.getAge());
-            stmt.setInt(5, teacher.getSex());
-            stmt.setInt(6, teacher.getMajorId());
-            stmt.setInt(7, teacher.getTitle());
-            stmt.setInt(8, teacher.getLendBooksNum());
-            stmt.setString(9, teacher.getId());
-            stmt.executeUpdate();
-            return true;
-        }catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public Teacher queryById(String TeacherID) throws SQLException {
-        String sql= "SELECT * FROM Teacher where userId="+ "'"+ TeacherID +"'";
+    public ArrayList<MedicinePurchaseRecord> queryByStu(String stuId) throws SQLException {
+        String sql= "SELECT * FROM MedicinePurchaseRecord where purchaseID="+ "'"+ stuId +"'";
         stmt = access.connection.prepareStatement(sql);
         rs = stmt.executeQuery();
 
         if(rs.next())
         {
-            return rsToTeacher();
+            return rsToMedicineList();
         }
         return null;
     }
 
 
-    public Teacher rsToTeacher()
-    {
-        try
-        {
-            Teacher teacher = new Teacher();
-            teacher.setUserType(1);
-            teacher.setpwd(rs.getString("teacherPwd"));
-            teacher.setId(rs.getString("teacherId"));
-            teacher.setName(rs.getString("teacherName"));
-            teacher.setLendBooksNum(rs.getInt("lendBooksNum"));
-            teacher.setAge(rs.getInt("age"));
-            teacher.setSex(rs.getInt("sex"));
-            teacher.setTitle(rs.getInt("title"));
-            teacher.setMajorId(rs.getInt("majorId"));
-            return teacher;
-        }catch(Exception e)
+    public ArrayList<MedicinePurchaseRecord> rsToMedicineList(){
+        try {
+            ArrayList<MedicinePurchaseRecord> list=new ArrayList<MedicinePurchaseRecord>();
+            do {
+                MedicinePurchaseRecord mp = new MedicinePurchaseRecord();
+                mp.setPurchaseID(rs.getInt("purchaseID"));
+                mp.setPurchaseStuId(rs.getString("purchaseStuId"));
+                mp.setPurchaseMedId(rs.getString("purchaseMedId"));
+                mp.setPurchaseDate(rs.getString("purchaseDate"));
+                mp.setPurchaseTime(rs.getString("purchaseTime"));
+                mp.setPurchaseCost(rs.getDouble("purchaseCost"));
+                mp.setPurchaseNum(rs.getInt("purchaseNum"));
+                list.add(mp);
+            }while(rs.next());
+            return list;
+        }
+        catch(Exception e)
         {
             e.printStackTrace();
         }
