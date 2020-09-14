@@ -13,38 +13,30 @@ public class CourseDao {
     private PreparedStatement stmt = null;
     private ResultSet rs = null;
 
-    private void setStudentCoursesList(String sql, Person person, String semester) {
-        ArrayList<Course> cs = new ArrayList<Course>();
-        try {
-            stmt = access.connection.prepareStatement(sql);
-            stmt.setString(1, person.getECardNumber());
-            if(!semester.isEmpty()){
-                stmt.setString(2, semester);
-            }
-            ResultSet courseRes = stmt.executeQuery();
-            while(courseRes.next()) {
-                String courseNumber = courseRes.getString("courseNumber");
-                String courseName = courseRes.getString("courseName");
-                String courseLecturer = courseRes.getString("courseLecturer");
-                String courseSemester = courseRes.getString("courseSemester");
-                String coursePlace = courseRes.getString("coursePlace");
-                String courseTime = courseRes.getString("courseTime");
-                String courseType = courseRes.getString("courseType");
-                String courseCredit = courseRes.getString("courseCredit");
-                int maxStuds = courseRes.getInt("maximumStudents");
-                int erdStuds = courseRes.getInt("enrolledStudents");
-                boolean isExam = courseRes.getBoolean("isExam");
+    private ArrayList<Course> rsToCoursesList()
+    {
+        try{
+            ArrayList<Course> cs = new ArrayList<Course>();
+            while(rs.next()) {
+                String courseNumber = rs.getString("courseNumber");
+                String courseName = rs.getString("courseName");
+                String courseLecturer = rs.getString("courseLecturer");
+                String courseSemester = rs.getString("courseSemester");
+                String coursePlace = rs.getString("coursePlace");
+                String courseTime = rs.getString("courseTime");
+                String courseType = rs.getString("courseType");
+                String courseCredit = rs.getString("courseCredit");
+                int maxStuds = rs.getInt("maximumStudents");
+                int erdStuds = rs.getInt("enrolledStudents");
+                boolean isExam = rs.getBoolean("isExam");
                 Course c = new Course(courseNumber,courseName,courseSemester,courseLecturer,coursePlace,courseTime,
                         courseCredit,courseType,maxStuds,erdStuds,isExam);
-                boolean gradeAdded = courseRes.getBoolean("gradeAdded");
+                boolean gradeAdded = rs.getBoolean("gradeAdded");
                 c.setGradeAdded(gradeAdded);
                 cs.add(c);
             }
-            person.setCourses(cs);
-            person.setType(Message.MESSAGE_TYPE.TYPE_SUCCESS);
         } catch (SQLException e) {
             e.printStackTrace();
-            person.setType(Message.MESSAGE_TYPE.TYPE_FAIL);
         }
     }
 
