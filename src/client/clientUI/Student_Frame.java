@@ -19,7 +19,7 @@ import javafx.scene.input.Mnemonic;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import server.biz.UserManagement;
-import server.biz.UserManagementImp;
+//import server.biz.UserManagementImp;
 import vo.Login;
 import vo.Message;
 import vo.User;

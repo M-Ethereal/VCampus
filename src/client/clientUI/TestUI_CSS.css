@@ -1,0 +1,21 @@
+
+
+.font-large {
+    -fx-font-size: 18pt;
+}
+
+.font-big {
+    -fx-font-size: 14pt;
+}
+
+#bExit{
+    -fx-min-width: 40px;
+    -fx-max-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-height: 40px;
+    -fx-border-radius: 20px;
+}
+
+#bMy{
+    -fx-text-background-color: #FFFFFF;
+}

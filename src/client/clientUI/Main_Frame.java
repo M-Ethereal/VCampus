@@ -19,7 +19,7 @@ import javafx.scene.input.Mnemonic;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import server.biz.UserManagement;
-import server.biz.UserManagementImp;
+//import server.biz.UserManagementImp;
 import vo.Login;
 import vo.Message;
 import vo.User;
@@ -30,115 +30,115 @@ import java.net.*;
 
 public class Main_Frame extends Application{
 
-	Socket socket;
-	private class LoginInfo{
-		LoginInfo(String u,String p){
-			username = u;
-			password = p;
-		}
-		public String username;
-		public String password;
-	}
-	
-	@Override
-	public void start(Stage primaryStage) {
-		//	鐢ㄦ埛
-		Client client = new Client();
+    Socket socket;
+    private class LoginInfo{
+        LoginInfo(String u,String p){
+            username = u;
+            password = p;
+        }
+        public String username;
+        public String password;
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        //	用户
+        Client client = new Client();
 
 //	User
-		User user;
-		try {
-		     //这是一行新的注释！！！！！！
-			primaryStage.setTitle("VCampus");
-			//璁剧疆鐣岄潰澶у皬(榛勯噾鍒嗗壊姣攛s)
-			primaryStage.setWidth(900);
-			primaryStage.setHeight(556);
-			//鐣岄潰澶у皬鍥哄畾
-			primaryStage.setResizable(false);
-			//椤甸潰鍒濆鍦ㄤ腑闂�
-			primaryStage.setX(300);
-			primaryStage.setY(220);
-			
-			//scene鏍硅妭鐐�
-			Group root = new Group();
-			Scene scene = new Scene(root,400,400);
-			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			
-			//娣诲姞涓�涓櫥褰曟寜閽�
-			Button LoginBtn = new Button("鐧诲綍");
-			LoginBtn.setPrefWidth(80);
-			LoginBtn.setPrefHeight(30);
-			LoginBtn.setLayoutX(150);
-			LoginBtn.setLayoutY(110);
-			
-			
-			//鎻愮ず鏂囧瓧
-			Label lb1 = new Label("鐢ㄦ埛鍚�");
-			Label lb2 = new Label(" 瀵嗙爜");
-			
-			//娣诲姞鐢ㄦ埛鍚嶆
-			TextField UserNametf = new TextField();
-			UserNametf.setPromptText("鐢ㄦ埛鍚�");
-			
-			//娣诲姞瀵嗙爜妗�
-			PasswordField PassWordtf = new PasswordField();
-			PassWordtf.setPromptText("瀵嗙爜");
-			
-			//缁勫悎鏍囩涓庢枃鏈
-			HBox hb1 = new HBox();
-			hb1.getChildren().addAll(lb1,UserNametf);
-			hb1.setSpacing(10);
-			hb1.setLayoutX(100);
-			hb1.setLayoutY(10);
-			HBox hb2 = new HBox();
-			hb2.getChildren().addAll(lb2,PassWordtf);
-			hb2.setSpacing(19);
-			hb2.setLayoutX(100);
-			hb2.setLayoutY(60);
-			
-			
-			//璁捐鍗曞嚮鍝嶅簲浜嬩欢
-			LoginBtn.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					String idtext = UserNametf.getText();
-					String idstr = new String(idtext);
+        User user;
+        try {
+            //程序名为VCampus
+            primaryStage.setTitle("VCampus");
+            //设置界面大小(黄金分割比xs)
+            primaryStage.setWidth(900);
+            primaryStage.setHeight(556);
+            //界面大小固定
+            primaryStage.setResizable(false);
+            //页面初始在中间
+            primaryStage.setX(300);
+            primaryStage.setY(220);
 
-					String pwdtext = PassWordtf.getText();
-					String pwdstr = new String(pwdtext);
+            //scene根节点
+            Group root = new Group();
+            Scene scene = new Scene(root,400,400);
+            //scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
-//								寮傚父浜嬩欢澶勭悊锛屽脊鍑哄等会我就会好的哈哈
-					if(idtext.equals("")) {
-						JOptionPane.showMessageDialog(null, "鐢ㄦ埛鍚嶄笉寰椾负绌猴紝璇烽噸鏂拌緭鍏ャ��");
-					}else if(pwdtext.equals("")) {
-						JOptionPane.showMessageDialog(null, "瀵嗙爜涓嶅緱涓虹┖锛岃閲嶆柊杈撳叆銆�");
-					}
+            //添加一个登录按钮
+            Button LoginBtn = new Button("登录");
+            LoginBtn.setPrefWidth(80);
+            LoginBtn.setPrefHeight(30);
+            LoginBtn.setLayoutX(150);
+            LoginBtn.setLayoutY(110);
 
-//								鐧诲綍妫�楠�
-					Message mes = new Message();
-					mes.setUserType(0); // student: 0
-					Login login = new Login();
-					login.setId(idstr);
-					login.setPwd(pwdstr);
-					mes.setData(login);
-					mes.setMessageType("USER_LOGIN");
 
-					Message serverResponse = client.sendRequestToServer(mes);
-					System.out.println("瀵嗙爜妫�鏌ヤ腑"+serverResponse.isLastOperState());
+            //提示文字
+            Label lb1 = new Label("用户名");
+            Label lb2 = new Label(" 密码");
 
-//									鑻ョ櫥褰曟垚鍔�
-					if(serverResponse.isLastOperState()){
-						System.out.println("鐧诲綍鎴愬姛");
-					}
-//									鐧婚檰涓嶆垚鍔�
-					else {
-						System.out.println("鐧诲綍澶辫触");
-					}
-				}
-			});
-			
-			
-//			//娣诲姞鐧诲綍蹇嵎閿�(Enter閿嚜鍔ㄧ櫥褰�)
+            //添加用户名框
+            TextField UserNametf = new TextField();
+            UserNametf.setPromptText("用户名");
+
+            //添加密码框
+            PasswordField PassWordtf = new PasswordField();
+            PassWordtf.setPromptText("密码");
+
+            //组合标签与文本框
+            HBox hb1 = new HBox();
+            hb1.getChildren().addAll(lb1,UserNametf);
+            hb1.setSpacing(10);
+            hb1.setLayoutX(100);
+            hb1.setLayoutY(10);
+            HBox hb2 = new HBox();
+            hb2.getChildren().addAll(lb2,PassWordtf);
+            hb2.setSpacing(19);
+            hb2.setLayoutX(100);
+            hb2.setLayoutY(60);
+
+
+            //设计单击响应事件
+            LoginBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    String idtext = UserNametf.getText();
+                    String idstr = new String(idtext);
+
+                    String pwdtext = PassWordtf.getText();
+                    String pwdstr = new String(pwdtext);
+
+//								异常事件处理，弹出对话框
+                    if(idtext.equals("")) {
+                        JOptionPane.showMessageDialog(null, "用户名不得为空，请重新输入。");
+                    }else if(pwdtext.equals("")) {
+                        JOptionPane.showMessageDialog(null, "密码不得为空，请重新输入。");
+                    }
+
+//								登录检验
+                    Message mes = new Message();
+                    mes.setUserType(0); // student: 0
+                    Login login = new Login();
+                    login.setId(idstr);
+                    login.setPwd(pwdstr);
+                    mes.setData(login);
+                    mes.setMessageType("USER_LOGIN");
+
+                    Message serverResponse = client.sendRequestToServer(mes);
+                    System.out.println("密码检查中"+serverResponse.isLastOperState());
+
+//									若登录成功
+                    if(serverResponse.isLastOperState()){
+                        System.out.println("登录成功");
+                    }
+//									登陆不成功
+                    else {
+                        System.out.println("登录失败");
+                    }
+                }
+            });
+
+
+//			//添加登录快捷键(Enter键自动登录)
 //			KeyCombination kc = new KeyCodeCombination(KeyCode.ENTER);
 //			scene.getAccelerators().put(kc, new Runnable() {
 //				@Override
@@ -147,52 +147,52 @@ public class Main_Frame extends Application{
 //				}
 //			}
 //			);
-					
-			root.getChildren().addAll(LoginBtn,hb1,hb2);
-			
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-//	//鐧婚檰鎿嶄綔
+
+            root.getChildren().addAll(LoginBtn,hb1,hb2);
+
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+//	//登陆操作
 //	private void Login(LoginInfo user) {
 //		try {
-//			System.out.println("姝ｅ湪鍚戞湇鍔＄鍙戦�佺櫥褰曡姹�");
+//			System.out.println("正在向服务端发送登录请求");
 //			socket = new Socket("");
 //
 //			BufferedReader br = new BufferedReader(user.username);
 //
 //			PrintWriter write = new PrintWriter(socket.getOutputStream());
-//			// 鐢盨ocket瀵硅薄寰楀埌杈撳嚭娴侊紝骞舵瀯閫燩rintWriter瀵硅薄
-//            //3銆佽幏鍙栬緭鍏ユ祦锛屽苟璇诲彇鏈嶅姟鍣ㄧ鐨勫搷搴斾俊鎭�
+//			// 由Socket对象得到输出流，并构造PrintWriter对象
+//            //3、获取输入流，并读取服务器端的响应信息
 //    //        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//            // 鐢盨ocket瀵硅薄寰楀埌杈撳叆娴侊紝骞舵瀯閫犵浉搴旂殑BufferedReader瀵硅薄
+//            // 由Socket对象得到输入流，并构造相应的BufferedReader对象
 //            String readline;
 //            readline = br.readLine();
 //
 //
 //
 //            while (!readline.equals("end")) {
-//                // 鑻ヤ粠鏍囧噯杈撳叆璇诲叆鐨勫瓧绗︿覆涓� "end"鍒欏仠姝㈠惊鐜�
+//                // 若从标准输入读入的字符串为 "end"则停止循环
 //                write.println(readline);
-//                // 灏嗕粠绯荤粺鏍囧噯杈撳叆璇诲叆鐨勫瓧绗︿覆杈撳嚭鍒癝erver
+//                // 将从系统标准输入读入的字符串输出到Server
 //                write.flush();
-//                // 鍒锋柊杈撳嚭娴侊紝浣縎erver椹笂鏀跺埌璇ュ瓧绗︿覆
+//                // 刷新输出流，使Server马上收到该字符串
 //                System.out.println("Client:" + readline);
-//                // 鍦ㄧ郴缁熸爣鍑嗚緭鍑轰笂鎵撳嵃璇诲叆鐨勫瓧绗︿覆
+//                // 在系统标准输出上打印读入的字符串
 //  //              System.out.println("Server:" + in.readLine());
-//                // 浠嶴erver璇诲叆涓�瀛楃涓诧紝骞舵墦鍗板埌鏍囧噯杈撳嚭涓�
-//                readline = br.readLine(); // 浠庣郴缁熸爣鍑嗚緭鍏ヨ鍏ヤ竴瀛楃涓�
-//            } // 缁х画寰幆
-//            //4銆佸叧闂祫婧�
-//            write.close(); // 鍏抽棴Socket杈撳嚭娴�
-//  //          in.close(); // 鍏抽棴Socket杈撳叆娴�
-//            socket.close(); // 鍏抽棴Socket
+//                // 从Server读入一字符串，并打印到标准输出上
+//                readline = br.readLine(); // 从系统标准输入读入一字符串
+//            } // 继续循环
+//            //4、关闭资源
+//            write.close(); // 关闭Socket输出流
+//  //          in.close(); // 关闭Socket输入流
+//            socket.close(); // 关闭Socket
 //
-//			System.out.println("瀹屾垚杩炴帴");
+//			System.out.println("完成连接");
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}

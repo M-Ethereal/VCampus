@@ -32,6 +32,7 @@ public class Client {
             response.close();
             socket.close();
 
+
             if(message!=null)
             {
                 return message;
