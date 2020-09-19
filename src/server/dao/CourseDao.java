@@ -26,6 +26,7 @@ public class CourseDao {
                 String courseLecturer = rs.getString("courseLecturer");
                 String courseSemester = rs.getString("courseSemester");
                 String coursePlace = rs.getString("coursePlace");
+                String courseTerm = rs.getString("courseTerm");
                 String courseTime = rs.getString("courseTime");
                 String courseType = rs.getString("courseType");
                 String courseCredit = rs.getString("courseCredit");

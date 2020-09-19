@@ -30,15 +30,15 @@
 //                return false;
 //        }
 //        else if(userType==2){
-//            Doctor aim=daod.query(id);
-//            if(aim.getPwd().equals(pwd))
+//            Doctor aim=daod.queryById(id);
+//            if(aim.getpwd().equals(pwd))
 //                return true;
 //            else
 //                return false;
 //        }
 //        else if(userType==3){
-//            Retailer aim=daor.query(id);
-//            if(aim.getPwd().equals(pwd))
+//            Retailer aim=daor.queryById(id);
+//            if(aim.getpwd().equals(pwd))
 //                return true;
 //            else
 //                return false;
@@ -48,7 +48,7 @@
 //             * 此处添加admin信息
 //             */
 //            Admin aim=daoa.query(id);
-//            if(aim.getPwd().equals(pwd))
+//            if(aim.getpwd().equals(pwd))
 //                return true;
 //            else
 //                return false;

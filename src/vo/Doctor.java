@@ -15,8 +15,8 @@ public class Doctor extends Worker implements Serializable {
         this.setSex(0);
         this.setJobType(1);//0-医生 1-商人
         this.setPosition("");
-        this.setRenown("");
-        this.setDept("");
+        this.setRenown("");//49/10
+        this.setDept("");//0-内科 1-外科 2-皮肤科 3-耳鼻喉科 4-口腔 5-眼科 6-心理咨询
     }
 
     public String getDept() {

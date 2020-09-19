@@ -11,6 +11,7 @@ public class Course implements Serializable {
     private String courseLecturer;
     private String lecturerECardNumber;
     private String coursePlace;
+    private String courseTerm;
     private String courseTime;
     private String courseCredit;
     private String courseType;
@@ -173,6 +174,14 @@ public class Course implements Serializable {
 
     public void setCoursePlace(String coursePlace) {
         this.coursePlace = coursePlace;
+    }
+
+    public String getCourseTerm() {
+        return courseTerm;
+    }
+
+    public void setCourseTerm(String courseTerm) {
+        this.courseTerm = courseTerm;
     }
 
     public String getCourseTime() {

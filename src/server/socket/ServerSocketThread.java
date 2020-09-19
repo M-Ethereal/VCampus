@@ -1,37 +1,39 @@
-//package server.socket;
-//
+package server.socket;
+
 //import server.biz.UserManagementImp;
-//import util.Constants;
-//import vo.Login;
-//import vo.Message;
-//
-//import java.io.BufferedInputStream;
-//import java.io.IOException;
-//import java.io.ObjectInputStream;
-//import java.io.ObjectOutputStream;
-//import java.net.Socket;
-//import java.sql.SQLException;
-//
-//public class ServerSocketThread implements Runnable{
-//    private Socket clientSocket;
-//    private UserManagementImp dao = new UserManagementImp();
-//
-//    ServerSocketThread(Socket socket) {
-//        this.clientSocket = socket;
-//    }
-//
-//    @Override
-//    public synchronized void run() {
-//
-//        try{
-//            ObjectInputStream message = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
-//            Message object = (Message)message.readObject();
-//            System.out.println("已与客户端建立连接，当前客户端ip为：" + clientSocket.getInetAddress().getHostAddress());
-//            System.out.println(object.getMessageType());
-//            Message serverResponse = new Message();
-//            //System.out.println("1");
-//            switch (object.getMessageType())
-//            {
+import server.dao.DoctorDao;
+import util.MessageType;
+import vo.Doctor;
+import vo.Message;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+
+public class ServerSocketThread implements Runnable{
+    private Socket clientSocket;
+    //private UserManagementImp dao = new UserManagementImp();
+    private DoctorDao docDao = new DoctorDao();
+
+    ServerSocketThread(Socket socket) {
+        this.clientSocket = socket;
+    }
+
+    @Override
+    public synchronized void run() {
+
+        try{
+            ObjectInputStream message = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
+            Message object = (Message)message.readObject();
+            System.out.println("已与客户端建立连接，当前客户端ip为：" + clientSocket.getInetAddress().getHostAddress());
+            System.out.println(object.getMessageType());
+            Message serverResponse = new Message();
+            //System.out.println("1");
+            switch (object.getMessageType())
+            {
 //                case Constants.userLogin:
 //                    try
 //                    {
@@ -56,17 +58,33 @@
 //                        response.writeObject(serverResponse);
 //                    }
 //                    break;
-//            }
-//        }
-////        catch(){
-////
-////        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//    }
+                case MessageType.doc_query_all:
+                    try
+                    {
+                        serverResponse.setMessageType(MessageType.operFeedback);
+                        serverResponse.setLastOperState(true);
+                        ArrayList<Doctor> docs = docDao.queryAll();
+
+                        if(docs!=null) serverResponse.setData(docs);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        ObjectOutputStream response = new ObjectOutputStream(clientSocket.getOutputStream());
+                        response.writeObject(serverResponse);
+                    }
+                    break;
+            }
+        }
+//        catch(){
 //
-//
-//}
+//        }
+        catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+}

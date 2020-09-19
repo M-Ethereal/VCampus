@@ -6,6 +6,7 @@ import javax.print.Doc;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DoctorDao {
     private DbHelper access = new DbHelper();
@@ -93,6 +94,18 @@ public class DoctorDao {
         return false;
     }
 
+    public ArrayList<Doctor> queryAll() throws SQLException {
+        String sql = "select * from Doctor";
+        stmt = stmt = access.connection.prepareStatement(sql);
+        rs = stmt.executeQuery();
+
+        if(rs.next())
+        {
+            return rsToDoctorList();
+        }
+        return null;
+    }
+
     public Doctor queryById(String docID) throws SQLException {
         String sql= "SELECT * FROM Doctor where docId="+ "'"+ docID +"'";
         stmt = access.connection.prepareStatement(sql);
@@ -122,6 +135,34 @@ public class DoctorDao {
             doctor.setDept(rs.getString("dept"));
             doctor.setPosition(rs.getString("position"));
             return doctor;
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public ArrayList<Doctor> rsToDoctorList()
+    {
+        try
+        {
+            ArrayList<Doctor> list = new ArrayList<Doctor>();
+            do{
+                Doctor doctor = new Doctor();
+                doctor.setId(rs.getString("docId"));
+                doctor.setpwd(rs.getString("docPwd"));
+                doctor.setUserType(2);
+                doctor.setName(rs.getString("docName"));
+                doctor.setJobType(rs.getInt("jobType"));
+                doctor.setAge(rs.getInt("age"));
+                doctor.setSex(rs.getInt("sex"));
+                doctor.setRenown(rs.getString("renown"));
+                doctor.setDept(rs.getString("dept"));
+                doctor.setPosition(rs.getString("position"));
+                list.add(doctor);
+            } while (rs.next());
+            return list;
         }catch(Exception e)
         {
             e.printStackTrace();
