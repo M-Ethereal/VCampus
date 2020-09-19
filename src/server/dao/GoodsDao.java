@@ -107,19 +107,19 @@ public class GoodsDao {
         }
     	return null;
     }
-    public static void main(String []args) {
-    	Goods good=new Goods();
-    	good.setgID("1");
-    	good.setgName("无线鼠标");
-    	good.setgPrice("100");
-    	good.setgTag("电子设备");
-    	good.setgIntroduction("蓝牙可充电");
-    	good.setgStore("10");
-    	GoodsDao d=new GoodsDao();
-    	//d.InsertGoods(good);
-    	d.UpdateGoods("蒙牛纯牛奶", "gPrice", "50");//异常！！！
-    	//d.TagQuery(good);
-    	//d.DeleteGoods(good);
-    }
+//    public static void main(String []args) {
+//    	Goods good=new Goods();
+//    	good.setgID("1");
+//    	good.setgName("无线鼠标");
+//    	good.setgPrice("100");
+//    	good.setgTag("电子设备");
+//    	good.setgIntroduction("蓝牙可充电");
+//    	good.setgStore("10");
+//    	GoodsDao d=new GoodsDao();
+//    	//d.InsertGoods(good);
+//    	d.UpdateGoods("蒙牛纯牛奶", "gPrice", "50");//异常！！！
+//    	//d.TagQuery(good);
+//    	//d.DeleteGoods(good);
+//    }
 }
 
