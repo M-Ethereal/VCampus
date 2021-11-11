@@ -1,0 +1,7 @@
+.dialog-pane .button-bar .container {
+    -fx-padding: 0px;
+}
+
+.dialog-pane:no-header .graphic-container {
+    -fx-padding: 0px;
+}

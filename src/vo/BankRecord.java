@@ -10,18 +10,19 @@ public class BankRecord implements Serializable {
     private String uID;//一卡通号
     private String record;//使用详情（商品支付、充值。。。）
     private double amount;//具体数额
-    private String time;//使用时间
+    private String date;//使用时间
+
     public BankRecord() {
         uID = "";
         record = "";
         amount = 0;
-        time = "";
+        date = "";
     }
-    public BankRecord(String i,String r,double a,String t) {
+    public BankRecord(String i,String r,double a,String d) {
         this.setuID(i);
         this.setRecord(r);
         this.setAmount(a);
-        this.setTime(t);
+        this.setDate(d);
     }
 
 	/*public void setID(int a) {
@@ -52,10 +53,11 @@ public class BankRecord implements Serializable {
         return this.amount;
     }
 
-    public void setTime(String a) {
-        this.time=a;
+    public void setDate(String d) {
+        this.date=d;
     }
-    public String getTime() {
-        return this.time;
+    public String getDate() {
+        return this.date;
     }
 }
+

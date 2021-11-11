@@ -9,7 +9,6 @@ public class Course implements Serializable {
     private String courseName;
     private String courseSemester;
     private String courseLecturer;
-    private String lecturerECardNumber;
     private String coursePlace;
     private String courseTerm;
     private String courseTime;
@@ -17,13 +16,28 @@ public class Course implements Serializable {
     private String courseType;
     private int maximumStudents;
     private int enrolledStudents;
-    private int courseGrade;
-    private boolean isConflict;
     private boolean isExam;
     private boolean gradeAdded;
     private String examTime;
     private String examPlace;
-    private String studentName;
+
+    public Course(){
+        this.courseNumber = "";
+        this.courseName = "";
+        this.courseSemester = "";
+        this.courseLecturer = "";
+        this.coursePlace = "";
+        this.courseTerm = "";
+        this.courseTime = "";
+        this.courseCredit = "";
+        this.courseType = "";
+        this.maximumStudents = 0;
+        this.enrolledStudents = 0;
+        this.isExam = false;
+        this.gradeAdded = false;
+        this.examTime = "";
+        this.examPlace = "";
+    }
 
 
     public Course(String courseNumber, String courseName, String courseSemester, String courseLecturer) {
@@ -54,24 +68,25 @@ public class Course implements Serializable {
         this.isExam = isExam;
     }
 
-    public Course(String courseNumber, String courseName, String courseSemester, String courseLecturer,
-                  String courseCredit, String courseType, int courseGrade) {
-        this.courseNumber = courseNumber;
-        this.courseName = courseName;
-        this.courseSemester = courseSemester;
-        this.courseLecturer = courseLecturer;
-        this.courseCredit = courseCredit;
-        this.courseType = courseType;
-        this.courseGrade = courseGrade;
-    }
+//    public Course(String courseNumber, String courseName, String courseSemester, String courseLecturer,
+//                  String courseCredit, String courseType, int courseGrade) {
+//        this.courseNumber = courseNumber;
+//        this.courseName = courseName;
+//        this.courseSemester = courseSemester;
+//        this.courseLecturer = courseLecturer;
+//        this.courseCredit = courseCredit;
+//        this.courseType = courseType;
+//        this.courseGrade = courseGrade;
+//    }
 
     public Course(String courseNumber, String courseName, String courseSemester, String courseLecturer,
-                  String coursePlace, String courseTime, String courseCredit, String courseType,
+                  String coursePlace, String courseTerm, String courseTime, String courseCredit, String courseType,
                   int maximumStudents, int enrolledStudents, boolean isExam, boolean gradeAdded) {
         this.courseNumber = courseNumber;
         this.courseName = courseName;
         this.courseSemester = courseSemester;
         this.courseLecturer = courseLecturer;
+        this.courseTerm = courseTerm;
         this.coursePlace = coursePlace;
         this.courseTime = courseTime;
         this.courseCredit = courseCredit;
@@ -83,14 +98,13 @@ public class Course implements Serializable {
     }
 
     public Course(String courseNumber, String courseName, String courseSemester, String courseLecturer,
-                  String lecturerECardNumber,
-                  String coursePlace, String courseTime, String courseCredit, String courseType,
-                  int maximumStudents, int enrolledStudents, boolean isExam, boolean gradeAdded) {
+                  String coursePlace, String courseTerm, String courseTime, String courseCredit, String courseType,
+                  int maximumStudents, int enrolledStudents, boolean isExam) {
         this.courseNumber = courseNumber;
         this.courseName = courseName;
         this.courseSemester = courseSemester;
         this.courseLecturer = courseLecturer;
-        this.lecturerECardNumber = lecturerECardNumber;
+        this.courseTerm = courseTerm;
         this.coursePlace = coursePlace;
         this.courseTime = courseTime;
         this.courseCredit = courseCredit;
@@ -98,8 +112,26 @@ public class Course implements Serializable {
         this.maximumStudents = maximumStudents;
         this.enrolledStudents = enrolledStudents;
         this.isExam = isExam;
-        this.gradeAdded = gradeAdded;
     }
+
+//    public Course(String courseNumber, String courseName, String courseSemester, String courseLecturer,
+//                  String lecturerECardNumber,
+//                  String coursePlace, String courseTime, String courseCredit, String courseType,
+//                  int maximumStudents, int enrolledStudents, boolean isExam, boolean gradeAdded) {
+//        this.courseNumber = courseNumber;
+//        this.courseName = courseName;
+//        this.courseSemester = courseSemester;
+//        this.courseLecturer = courseLecturer;
+//        this.lecturerECardNumber = lecturerECardNumber;
+//        this.coursePlace = coursePlace;
+//        this.courseTime = courseTime;
+//        this.courseCredit = courseCredit;
+//        this.courseType = courseType;
+//        this.maximumStudents = maximumStudents;
+//        this.enrolledStudents = enrolledStudents;
+//        this.isExam = isExam;
+//        this.gradeAdded = gradeAdded;
+//    }
 
     public Course(String courseNumber, String courseName, String courseSemester, String courseLecturer,
                   String courseCredit, String courseType, String examTime, String examPlace) {
@@ -160,14 +192,6 @@ public class Course implements Serializable {
         this.courseLecturer = courseLecturer;
     }
 
-    public String getLecturerECardNumber() {
-        return lecturerECardNumber;
-    }
-
-    public void setLecturerECardNumber(String lecturerECardNumber) {
-        this.lecturerECardNumber = lecturerECardNumber;
-    }
-
     public String getCoursePlace() {
         return coursePlace;
     }
@@ -224,21 +248,6 @@ public class Course implements Serializable {
         this.enrolledStudents = enrolledStudents;
     }
 
-    public int getCourseGrade() {
-        return courseGrade;
-    }
-
-    public void setCourseGrade(int courseGrade) {
-        this.courseGrade = courseGrade;
-    }
-
-    public boolean isConflict() {
-        return isConflict;
-    }
-
-    public void setConflict(boolean conflict) {
-        isConflict = conflict;
-    }
 
     public boolean isExam() {
         return isExam;
@@ -272,11 +281,4 @@ public class Course implements Serializable {
         this.examPlace = examPlace;
     }
 
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
 }

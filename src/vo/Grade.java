@@ -9,6 +9,7 @@ public class Grade implements Serializable {
     private String stuName;
     private String courseName;
     private Integer grade;
+    private Integer gradeType;
 
     public Grade()
     {
@@ -16,7 +17,8 @@ public class Grade implements Serializable {
         this.setCourseID("");
         this.setStuName("");
         this.setCourseName("");
-        this.setGrade(0);
+        this.setGrade(-1);
+        this.setGradeType(0);
     }
 
     public String getStuID() {
@@ -57,5 +59,15 @@ public class Grade implements Serializable {
 
     public void setGrade(Integer grade) {
         this.grade = grade;
+    }
+
+    public String getCourseSeme() { return  courseID.substring(courseID.length() - 7); }
+
+    public Integer getGradeType() {
+        return gradeType;
+    }
+
+    public void setGradeType(Integer gradeType) {
+        this.gradeType = gradeType;
     }
 }

@@ -1,112 +1,111 @@
-//package server.dao;
-//
-//import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
-//
-//public class PlaceAppointmentRecordDao {
-//    private DbHelper access = new DbHelper();
-//    private PreparedStatement stmt = null;
-//    private ResultSet rs = null;
-//
-//    public boolean insert(Teacher teacher) throws SQLException {
-//        try
-//        {
-//            String sql = "INSERT INTO Teacher (teacherId, teacherName, teacherPwd, userType"
-//                    +"age, sex, majorId, title, lendBooksNum) VALUES ( '"
-//                    + teacher.getId()
-//                    +"' , '"+teacher.getName()
-//                    +"' , '"+teacher.getpwd()
-//                    +"' , '"+ 1
-//                    +"' , '"+teacher.getAge()
-//                    +"' , '"+teacher.getSex()
-//                    +"' , '"+teacher.getMajorId()
-//                    +"' , '"+teacher.getTitle()
-//                    +"' , '"+teacher.getLendBooksNum()
-//                    +"' )";
-//            stmt = access.connection.prepareStatement(sql);
-//            stmt.executeUpdate();
-//            return true;
-//        }
-//        catch(SQLException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
-//
-//    public boolean delete(Teacher teacher) {
-//        try{
-//            String sql = "DELETE * FROM Teacher WHERE teacherId =?";
-//            stmt = access.connection.prepareStatement(sql);
-//            stmt.setString(1, teacher.getId());
-//            stmt.executeUpdate();
-//            return true;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
-//
-//    public boolean update(Teacher teacher) {
-//        try
-//        {
-//            String sql = "UPDATE Teacher SET teacherName=?,teacherPwd=?,userType=?,"
-//                    + "age=?,sex=?,majorId=?,title=?,"
-//                    + "lendBooksNum=?"
-//                    + "WHERE teacherID=?";
-//            stmt=access.connection.prepareStatement(sql);
-//            stmt = access.connection.prepareStatement(sql);
-//            stmt.setString(1, teacher.getName());
-//            stmt.setString(2, teacher.getpwd());
-//            stmt.setInt(3, 1);
-//            stmt.setInt(4, teacher.getAge());
-//            stmt.setInt(5, teacher.getSex());
-//            stmt.setInt(6, teacher.getMajorId());
-//            stmt.setInt(7, teacher.getTitle());
-//            stmt.setInt(8, teacher.getLendBooksNum());
-//            stmt.setString(9, teacher.getId());
-//            stmt.executeUpdate();
-//            return true;
-//        }catch(SQLException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
-//
-//    public Teacher queryById(String TeacherID) throws SQLException {
-//        String sql= "SELECT * FROM Teacher where userId="+ "'"+ TeacherID +"'";
-//        stmt = access.connection.prepareStatement(sql);
-//        rs = stmt.executeQuery();
-//
-//        if(rs.next())
-//        {
-//            return rsToTeacher();
-//        }
-//        return null;
-//    }
-//
-//
-//    public Teacher rsToTeacher()
-//    {
-//        try
-//        {
-//            Teacher teacher = new Teacher();
-//            teacher.setUserType(1);
-//            teacher.setpwd(rs.getString("teacherPwd"));
-//            teacher.setId(rs.getString("teacherId"));
-//            teacher.setName(rs.getString("teacherName"));
-//            teacher.setLendBooksNum(rs.getInt("lendBooksNum"));
-//            teacher.setAge(rs.getInt("age"));
-//            teacher.setSex(rs.getInt("sex"));
-//            teacher.setTitle(rs.getInt("title"));
-//            teacher.setMajorId(rs.getInt("majorId"));
-//            return teacher;
-//        }catch(Exception e)
-//        {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-//}
+package server.dao;
+
+import vo.Place;
+import vo.PlaceAppointmentRecord;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class PlaceAppointmentRecordDao {
+    private DbHelper access = new DbHelper();
+    private PreparedStatement stmt = null;
+    private ResultSet rs = null;
+    private PlaceDao placeDao = new PlaceDao();
+
+    //预约
+    public boolean insert(PlaceAppointmentRecord placeAppointmentRecord) throws SQLException {
+        try
+        {
+            //Place place = placeDao.queryByName(placeAppointmentRecord.getPlaceName());
+
+            String sql = "INSERT INTO PlaceAppointmentRecord (apDate, startTime, endTime, placeId, placeName, stuId, stuName"
+                    +") VALUES ( '"
+                    + placeAppointmentRecord.getStartDate()
+                    +"' , '"+ placeAppointmentRecord.getStartTime()
+                    +"' , '"+ placeAppointmentRecord.getEndTime()
+                    +"' , '"+ placeAppointmentRecord.getPlaceId()
+                    +"' , '"+ placeAppointmentRecord.getPlaceName()
+                    +"' , '"+ placeAppointmentRecord.getStuId()
+                    +"' , '"+ placeAppointmentRecord.getStuName()
+                    +"' )";
+            stmt = access.connection.prepareStatement(sql);
+            stmt.executeUpdate();
+            return true;
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //取消预约
+    public boolean delete(PlaceAppointmentRecord placeAppointmentRecord) {
+        try{
+            String sql = "DELETE * FROM PlaceAppointmentRecord WHERE apDate =? and startTime =? and endTime =? and placeName =? and stuId =?";
+            stmt = access.connection.prepareStatement(sql);
+            stmt.setString(1, placeAppointmentRecord.getStartDate());
+            stmt.setString(2, placeAppointmentRecord.getStartTime());
+            stmt.setString(3, placeAppointmentRecord.getEndTime());
+            stmt.setString(4, placeAppointmentRecord.getPlaceName());
+            stmt.setString(5, placeAppointmentRecord.getStuId());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+   //按照学生id查询
+    public ArrayList<PlaceAppointmentRecord> queryByStuId(String stuId) throws SQLException {
+        String sql= "SELECT * FROM PlaceAppointmentRecord where stuId="+ "'"+ stuId +"'";
+        stmt = access.connection.prepareStatement(sql);
+        rs = stmt.executeQuery();
+
+        if(rs.next())
+        {
+            return rsToPlaceAPList();
+        }
+        return null;
+    }
+
+    //按照场馆名查询
+    public ArrayList<PlaceAppointmentRecord> queryByPlaceName(String placeName) throws SQLException {
+        String sql= "SELECT * FROM PlaceAppointmentRecord where placeName="+ "'"+ placeName +"'";
+        stmt = access.connection.prepareStatement(sql);
+        rs = stmt.executeQuery();
+
+        if(rs.next())
+        {
+            return rsToPlaceAPList();
+        }
+        return null;
+    }
+
+    public ArrayList<PlaceAppointmentRecord> rsToPlaceAPList(){
+        try
+        {
+            ArrayList<PlaceAppointmentRecord> list = new ArrayList<PlaceAppointmentRecord>();
+            do{
+                PlaceAppointmentRecord placeAppointmentRecord = new PlaceAppointmentRecord();
+                placeAppointmentRecord.setStartDate(rs.getString("apDate"));
+                placeAppointmentRecord.setStartTime(rs.getString("startTime"));
+                placeAppointmentRecord.setEndTime(rs.getString("endTime"));
+                placeAppointmentRecord.setPlaceId(rs.getString("placeId"));
+                placeAppointmentRecord.setPlaceName(rs.getString("placeName"));
+                placeAppointmentRecord.setStuId(rs.getString("stuId"));
+                placeAppointmentRecord.setStuName(rs.getString("stuName"));
+                list.add(placeAppointmentRecord);
+            } while (rs.next());
+
+            return list;
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}

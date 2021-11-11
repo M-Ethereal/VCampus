@@ -4,14 +4,19 @@ import java.io.Serializable;
 
 public class ShopRecord implements Serializable { //商店购买记录
     private static final long serialVersionUID = 50000;
-    public String dID,dName,dsID,dbID,dDate,dNum;
-    public boolean dDelivery;
-    public void setdID(String dID) {
-        this.dID=dID;
+
+    private String dName,dsID,dbID,dDate,dNum;
+    private boolean renown;
+
+    public ShopRecord(){
+        this.setdName("");
+        this.setdsID("");
+        this.setdbID("");
+        this.setdDate("");
+        this.setdNum("");
+        this.setRenown(false);
     }
-    public String getdID() {
-        return dID;
-    }
+
     public void setdName(String dName) {
         this.dName=dName;
     }
@@ -30,12 +35,6 @@ public class ShopRecord implements Serializable { //商店购买记录
     public String getdbID() {
         return dbID;
     }
-    public void setdDelivery(boolean dDelivery) {
-        this.dDelivery=dDelivery;
-    }
-    public boolean getdDelivery() {
-        return dDelivery;
-    }
     public void setdDate(String dDate) {
         this.dDate=dDate;
     }
@@ -48,4 +47,13 @@ public class ShopRecord implements Serializable { //商店购买记录
     public String getdNum() {
         return dNum;
     }
+
+    public boolean isRenown() {
+        return renown;
+    }
+
+    public void setRenown(boolean renown) {
+        this.renown = renown;
+    }
 }
+

@@ -51,6 +51,18 @@ public class RegistrationRecordDao {
         return null;
     }
 
+    public ArrayList<RegistrationRecord> queryByStuId(String stuId) throws SQLException {
+        String sql= "SELECT * FROM RegistrationRecord where stuId="+ "'"+ stuId +"'";
+        stmt = access.connection.prepareStatement(sql);
+        rs = stmt.executeQuery();
+
+        if(rs.next())
+        {
+            return rsToRegistrationRecordList();
+        }
+        return null;
+    }
+
 
     public ArrayList<RegistrationRecord> rsToRegistrationRecordList(){
         try {

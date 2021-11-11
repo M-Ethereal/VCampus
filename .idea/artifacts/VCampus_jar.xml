@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="VCampus:jar">
+    <output-path>$PROJECT_DIR$/../newFolder</output-path>
+    <root id="archive" name="VCampus.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/../META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="VCampus" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/ucanaccess-5.0.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/commons-lang3-3.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/commons-logging-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/flow-8.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/hsqldb-2.5.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jackcess-3.0.1.jar" path-in-jar="/" />
+      <element id="library" level="project" name="jdk1.8" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jsoup-1.13.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jfoenix-8.0.10.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

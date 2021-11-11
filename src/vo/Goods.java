@@ -4,14 +4,8 @@ import java.io.Serializable;
 
 public class Goods implements Serializable {
 	private static final long serialVersionUID = 50000;
-	public String gID,gName,gPrice,gTag,gIntroduction,gStore;
+	private String gName,gPrice,gTag,gIntroduction,gStore,gsID;
 
-	public void setgID(String gID) {
-		this.gID=gID;
-	}
-	public String getgID() {
-		return gID;
-	}
 	public void setgName(String gName) {
 		this.gName=gName;
 	}
@@ -41,5 +35,11 @@ public class Goods implements Serializable {
 	}
 	public String getgStore() {
 		return gStore;
+	}
+	public void setgsID(String gsID) {
+		this.gsID=gsID;
+	}
+	public String getgsID() {
+		return gsID;
 	}
 }

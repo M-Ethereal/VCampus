@@ -26,4 +26,5 @@ public class Doctor extends Worker implements Serializable {
     public void setDept(String dept) {
         this.dept = dept;
     }
+
 }

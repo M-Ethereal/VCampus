@@ -1,207 +1,525 @@
-//package client.clientUI;
+package client.clientUI;
+
+import client.socket.Client;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.*;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import vo.*;
+
+import javax.swing.*;
+import java.net.Socket;
+
+//import server.biz.UserManagementImp;
+
+public class LoginPageUI {
+
+    Socket socket;
+    private User user;
+    private Integer userType;
+
+
+
+
+    public AnchorPane LoginPage(Scene scene) {
+        //	用户
+        Client client = new Client();
+
+    	AnchorPane pane = new AnchorPane();
+
+        //Logo
+        Image MainLogo = new Image("/client/Image/MainFrameTitle.png",200, 120,true,true);
+        ImageView MainLogoView = new ImageView(MainLogo);
+
+        Image MainLogo_white = new Image("/client/Image/MainFrameTitle_white.png",200, 120,true,true);
+        ImageView MainLogoView_white = new ImageView(MainLogo_white);
+
+        //加载页
+        //动图
+//        Image img_loading = new Image("/client/Image/loading.gif",350, 350,true,true);
+//        ImageView loading_view = new ImageView(img_loading);
+        //黑色
+//        Image img_loading = new Image("/client/Image/loadingPage2.png",450, 200,true,true);
+//        ImageView loading_view = new ImageView(img_loading);
+        //白色
+        Image img_loading = new Image("/client/Image/loadingPage2_white.png",450, 200,true,true);
+        ImageView loading_view = new ImageView(img_loading);
+        VBox loadingVBox = new VBox();
+        loadingVBox.getChildren().addAll(MainLogoView_white, loading_view);
+        loadingVBox.setAlignment(Pos.CENTER);
+        loadingVBox.setSpacing(20);
+        loadingVBox.setStyle("-fx-background-color: #004d40");
+
+
+    	
+    	//背景轮播
+//        StackPane stackPane = new StackPane();
+		Button buttonTest = new Button("");
+		buttonTest.setPrefSize(900, 556);
+//        Label label = new Label("");
+//        label.setOpacity(0.0);
+//        stackPane.getChildren().addAll(buttonTest, label);
+		//用线程实现轮播图
+		new Thread(new Runnable() {
+            Integer counter = 0;
+//			String text="";
+			@Override
+			public void run(){
+				while(true){
+					//用button上文字的长度来实现循环，缺点是轮播图上会多几个小点
+                    // （阅：大可不必，设个counter不就行了
+//	                if (buttonTest.getText().trim().length() == 0){
+                    if (counter == 0){
+	                    //text=".";
+	                    counter = (counter+1) % 5;
+	                    buttonTest.setStyle("-fx-background-image:url('/client/Image/bg1.jpg')");
+	                   
+	                }
+//	                else if(buttonTest.getText().trim().length() == 1){
+                    else if(counter == 1){
+                        counter = (counter+1) % 5;
+	                	//text="..";
+	                    buttonTest.setStyle("-fx-background-image:url('/client/Image/bg2.jpg')");
+	                }
+//	                else if(buttonTest.getText().trim().length() == 2){
+                    else if(counter == 2){
+                        counter = (counter+1) % 5;
+	                	//text="...";
+	                    buttonTest.setStyle("-fx-background-image:url('/client/Image/bg3.jpg')");
+	                }
+//	                else if(buttonTest.getText().trim().length() == 3){
+                    else if(counter == 3){
+                        counter = (counter+1) % 5;
+	                	//text="....";
+	                    buttonTest.setStyle("-fx-background-image:url('/client/Image/bg4.jpg')");
+	                }
+	                else{
+                        counter = (counter+1) % 5;
+	                	//text="";
+	                    buttonTest.setStyle("-fx-background-image:url('/client/Image/bg5.jpg')");
+	                }
+	                
+	                Platform.runLater(new Runnable(){
+	                    @Override
+	                    public void run(){
+//	                    	buttonTest.setText(text);
+	                    }
+	                });
+	                try {
+	                    Thread.sleep(3500);	
+	                } catch (InterruptedException ex) {
+	                }
+	            }
+	        }
+	    }).start();
+
+        //背景框
+        Label bg = new Label();
+        bg.setPrefSize(320, 580);
+        bg.setStyle("-fx-background-color:WHITE;");
+        bg.setOpacity(0.8);
+        bg.setLayoutX(650);
+
+  /////
+        //添加一个登录按钮
+        JFXButton LoginBtn = new JFXButton("登录");
+        LoginBtn.setPrefWidth(80);
+        LoginBtn.setPrefHeight(30);
+        LoginBtn.setLayoutX(790);
+        LoginBtn.setLayoutY(365);//295
+        LoginBtn.setStyle("-fx-font-size: 14px;-jfx-button-type: RAISED;-fx-background-color: rgb(77,102,204);-fx-text-fill: WHITE;");
+
+        //注册按钮
+        JFXButton SignUpBtn = new JFXButton("注册");
+        SignUpBtn.setPrefWidth(80);
+        SignUpBtn.setPrefHeight(30);
+        SignUpBtn.setLayoutX(680);
+        SignUpBtn.setLayoutY(365);//295
+        SignUpBtn.setStyle("-fx-font-size: 14px;-jfx-button-type: RAISED;-fx-background-color: rgb(77,102,204);-fx-text-fill: WHITE;");
+
+        JFXTextField UserNametf = new JFXTextField();
+        UserNametf.setLabelFloat(true);
+        UserNametf.setPromptText("用户名");
+        UserNametf.setLayoutX(720);
+        UserNametf.setLayoutY(240);//190
+        UserNametf.setStyle("-jfx-focus-color:#50A1F0;");
+
+        JFXPasswordField PassWordtf = new JFXPasswordField();
+        PassWordtf.setLabelFloat(true);
+        PassWordtf.setPromptText("密码");
+        PassWordtf.setLayoutX(720);
+        PassWordtf.setLayoutY(300);//240
+        PassWordtf.setStyle("-jfx-focus-color:#50A1F0;");
+
+        ImageView iv1 = new ImageView("/client/Image/user.png");
+        iv1.setFitHeight(25);
+        iv1.setFitWidth(25);
+        iv1.setLayoutX(685);
+        iv1.setLayoutY(240);
+        ImageView iv2 = new ImageView("/client/Image/psw.png");
+        iv2.setFitHeight(25);
+        iv2.setFitWidth(25);
+        iv2.setLayoutX(685);
+        iv2.setLayoutY(300);
+
+        MainLogoView.setLayoutX(675);
+        MainLogoView.setLayoutY(120);
+
+        pane.getChildren().addAll(buttonTest,bg,UserNametf,PassWordtf,LoginBtn,SignUpBtn, MainLogoView, iv1, iv2);
+
+        //////
+    	
+      //设计单击响应事件
+      LoginBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+          @Override
+          public void handle(ActionEvent event) {
+
+              System.out.println("***用户登录***");
+              String idtext = UserNametf.getText();
+              String idstr = new String(idtext);
+              System.out.println("用户ID：" + idstr);
+
+              String pwdtext = PassWordtf.getText();
+              String pwdstr = new String(pwdtext);
+              System.out.println("密码：" + pwdstr);
+
+//							异常事件处理，弹出对话框
+              if(idtext.equals("")) {
+                  JOptionPane.showMessageDialog(null, "用户名不得为空，请重新输入。");
+                  return;
+              }else if(pwdtext.equals("")) {
+                  JOptionPane.showMessageDialog(null, "密码不得为空，请重新输入。");
+                  return;
+              }
+
+//							登录检验
+              Message mes = new Message();
+              int type = -1 ;
+              //用用户名确认身份
+              if(idstr.length()<5) {
+            	  JOptionPane.showMessageDialog(null, "不符合规范的用户名！");
+                  return;
+              }
+              System.out.println("检查中-用户名前四位：" + idstr.subSequence(0, 4));
+              if(idstr.subSequence(0, 4).equals("2131"))
+            	  type = 0;
+              else if(idstr.subSequence(0, 2).equals("00"))
+            	  type = 1;
+              else if(Character.isUpperCase(idstr.charAt(1)))
+            	  type = 2;
+              else if(idstr.subSequence(0, 2).equals("bz"))
+            	  type = 3;
+              else if(idstr.subSequence(0, 5).equals("admin"))
+            	  type = 4;
+              else {
+            	  JOptionPane.showMessageDialog(null, "不符合规范的用户名！");
+                  return;
+              }
+              System.out.println("检查中-用户类型：" + type);
+
+              mes.setUserType(type);
+              Login login = new Login();
+              login.setId(idstr);
+              login.setPwd(pwdstr);
+              login.setUserType(type);
+              mes.setData(login);
+              mes.setMessageType("USER_LOGIN");
+
+              Message serverResponse = client.sendRequestToServer(mes);
+
+              System.out.println("密码检查中"+serverResponse.isLastOperState());
+              //待加，根据不同身份进入不同窗口
+              //已加
+              //0-student  1-teacher  2-doctor  3-retailer  4-admin
+
+
+              //加载页设置
+              AnchorPane loading = new AnchorPane(loadingVBox);
+              JFXDialogLayout layout_loading = new JFXDialogLayout();
+              layout_loading.setBody(loading);
+              DialogPane dp = new DialogPane();
+              dp.setContent(loadingVBox);
+//								若登录成功
+              if(serverResponse.isLastOperState()){
+                  switch (type){
+                      case 0://学生
+//                          //加载动画
+//                          AnchorPane loading = new AnchorPane(loadingVBox);
+//                          JFXDialogLayout layout_loading = new JFXDialogLayout();
+//                          layout_loading.setBody(loading);
+//                          DialogPane dp = new DialogPane();
+//                          dp.setContent(loadingVBox);
+                          Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                          alert.initStyle(StageStyle.UNDECORATED);
+                          alert.setHeaderText(null);
+                          alert.setContentText(null);
+                          alert.setDialogPane(dp);
+                          alert.getDialogPane().getStylesheets()
+                                  .add(getClass().getResource("Main.css").toExternalForm());
+                          alert.show();
+
+                          Student student = (Student) serverResponse.getData();
+                          Platform.runLater(() -> {
+                              //创建主界面窗口
+                              try {
+                                  ((Stage) LoginBtn.getScene().getWindow()).hide();
+                                  new MainFrameUI(student).start(new Stage());
+                              } catch (Exception e) {
+                                  e.printStackTrace();
+                              }
+                              //关闭登陆窗口和加载页
+                              alert.hide();
+//                              ((Stage) LoginBtn.getScene().getWindow()).hide();
+                          });
+//                          try{
+//                              System.out.println("*******************14*****************");
+//                              psg = mf.start(psg);
+//                              System.out.println("*******************15*****************");
 //
-//import client.socket.Client;
-//import javafx.application.Application;
-//import javafx.event.ActionEvent;
-//import javafx.event.EventHandler;
-//import javafx.stage.Stage;
-//import javafx.scene.Cursor;
-//import javafx.scene.Group;
-//import javafx.scene.Scene;
-//import javafx.scene.control.Button;
-//import javafx.scene.control.Label;
-//import javafx.scene.control.PasswordField;
-//import javafx.scene.control.TextField;
-//import javafx.scene.input.KeyCode;
-//import javafx.scene.input.KeyCodeCombination;
-//import javafx.scene.input.KeyCombination;
-//import javafx.scene.input.Mnemonic;
-//import javafx.scene.layout.BorderPane;
-//import javafx.scene.layout.HBox;
-//import server.biz.UserManagement;
-////import server.biz.UserManagementImp;
-//import vo.Login;
-//import vo.Message;
-//import vo.User;
-//
-//import javax.swing.*;
-//import java.io.*;
-//import java.net.*;
-//
-//public class LoginPageUI extends Application{
-//
-//    Socket socket;
-//    private class LoginInfo{
-//        LoginInfo(String u,String p){
-//            username = u;
-//            password = p;
-//        }
-//        public String username;
-//        public String password;
-//    }
-//
-//    @Override
-//    public void start(Stage primaryStage) {
-//        //	用户
-//        Client client = new Client();
-//
-////	User
-//        User user;
-//        try {
-//            //程序名为VCampus
-//            primaryStage.setTitle("VCampus");
-//            //设置界面大小(黄金分割比xs)
-//            primaryStage.setWidth(900);
-//            primaryStage.setHeight(556);
-//            //界面大小固定
-//            primaryStage.setResizable(false);
-//            //页面初始在中间
-//            primaryStage.setX(300);
-//            primaryStage.setY(220);
-//
-//            //scene根节点
-//            Group root = new Group();
-//            Scene scene = new Scene(root,400,400);
-//            //scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-//
-//            //添加一个登录按钮
-//            Button LoginBtn = new Button("登录");
-//            LoginBtn.setPrefWidth(80);
-//            LoginBtn.setPrefHeight(30);
-//            LoginBtn.setLayoutX(150);
-//            LoginBtn.setLayoutY(110);
 //
 //
-//            //提示文字
-//            Label lb1 = new Label("用户名");
-//            Label lb2 = new Label(" 密码");
-//
-//            //添加用户名框
-//            TextField UserNametf = new TextField();
-//            UserNametf.setPromptText("用户名");
-//
-//            //添加密码框
-//            PasswordField PassWordtf = new PasswordField();
-//            PassWordtf.setPromptText("密码");
-//
-//            //组合标签与文本框
-//            HBox hb1 = new HBox();
-//            hb1.getChildren().addAll(lb1,UserNametf);
-//            hb1.setSpacing(10);
-//            hb1.setLayoutX(100);
-//            hb1.setLayoutY(10);
-//            HBox hb2 = new HBox();
-//            hb2.getChildren().addAll(lb2,PassWordtf);
-//            hb2.setSpacing(19);
-//            hb2.setLayoutX(100);
-//            hb2.setLayoutY(60);
-//
-//
-//            //设计单击响应事件
-//            LoginBtn.setOnAction(new EventHandler<ActionEvent>() {
-//                @Override
-//                public void handle(ActionEvent event) {
-//                    String idtext = UserNametf.getText();
-//                    String idstr = new String(idtext);
-//
-//                    String pwdtext = PassWordtf.getText();
-//                    String pwdstr = new String(pwdtext);
-//
-////								异常事件处理，弹出对话框
-//                    if(idtext.equals("")) {
-//                        JOptionPane.showMessageDialog(null, "用户名不得为空，请重新输入。");
-//                    }else if(pwdtext.equals("")) {
-//                        JOptionPane.showMessageDialog(null, "密码不得为空，请重新输入。");
-//                    }
-//
-////								登录检验
-//                    Message mes = new Message();
-//                    mes.setUserType(0); // student: 0
-//                    Login login = new Login();
-//                    login.setId(idstr);
-//                    login.setPwd(pwdstr);
-//                    mes.setData(login);
-//                    mes.setMessageType("USER_LOGIN");
-//
-//                    Message serverResponse = client.sendRequestToServer(mes);
-//                    System.out.println("密码检查中"+serverResponse.isLastOperState());
-//
-////									若登录成功
-//                    if(serverResponse.isLastOperState()){
-//                        System.out.println("登录成功");
-//                    }
-////									登陆不成功
-//                    else {
-//                        System.out.println("登录失败");
-//                    }
-//                }
-//            });
-//
-//
-////			//添加登录快捷键(Enter键自动登录)
-////			KeyCombination kc = new KeyCodeCombination(KeyCode.ENTER);
-////			scene.getAccelerators().put(kc, new Runnable() {
-////				@Override
-////				public void run() {
-////					Login(new LoginInfo(UserNametf.getText(),PassWordtf.getText()));
-////				}
-////			}
-////			);
-//
-//            root.getChildren().addAll(LoginBtn,hb1,hb2);
-//
-//            primaryStage.setScene(scene);
-//            primaryStage.show();
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-////	//登陆操作
-////	private void Login(LoginInfo user) {
-////		try {
-////			System.out.println("正在向服务端发送登录请求");
-////			socket = new Socket("");
-////
-////			BufferedReader br = new BufferedReader(user.username);
-////
-////			PrintWriter write = new PrintWriter(socket.getOutputStream());
-////			// 由Socket对象得到输出流，并构造PrintWriter对象
-////            //3、获取输入流，并读取服务器端的响应信息
-////    //        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-////            // 由Socket对象得到输入流，并构造相应的BufferedReader对象
-////            String readline;
-////            readline = br.readLine();
-////
-////
-////
-////            while (!readline.equals("end")) {
-////                // 若从标准输入读入的字符串为 "end"则停止循环
-////                write.println(readline);
-////                // 将从系统标准输入读入的字符串输出到Server
-////                write.flush();
-////                // 刷新输出流，使Server马上收到该字符串
-////                System.out.println("Client:" + readline);
-////                // 在系统标准输出上打印读入的字符串
-////  //              System.out.println("Server:" + in.readLine());
-////                // 从Server读入一字符串，并打印到标准输出上
-////                readline = br.readLine(); // 从系统标准输入读入一字符串
-////            } // 继续循环
-////            //4、关闭资源
-////            write.close(); // 关闭Socket输出流
-////  //          in.close(); // 关闭Socket输入流
-////            socket.close(); // 关闭Socket
-////
-////			System.out.println("完成连接");
-////		} catch (Exception e) {
-////			e.printStackTrace();
-////		}
-////
-////
-////	}
-////
-////
-////	public static void main(String[] args) {
-////		launch(args);
-////	}
-//}
+//                          } catch (Exception e) {
+//                              e.printStackTrace();
+//                          }
+//                          System.out.println("*******************done*****************");
+//                          psg.show();
+
+                          break;
+
+                      case 1://老师
+                          Alert alert_teacher = new Alert(Alert.AlertType.INFORMATION);
+                          alert_teacher.initStyle(StageStyle.UNDECORATED);
+                          alert_teacher.setHeaderText(null);
+                          alert_teacher.setContentText(null);
+                          alert_teacher.setDialogPane(dp);
+                          alert_teacher.getDialogPane().getStylesheets()
+                                  .add(getClass().getResource("Main.css").toExternalForm());
+                          alert_teacher.show();
+
+                          Teacher teacher = (Teacher) serverResponse.getData();
+                          Platform.runLater(() -> {
+                              //创建主界面窗口
+                              try {
+                                  ((Stage) LoginBtn.getScene().getWindow()).hide();
+                                  new MainFrame_Teacher(teacher).start(new Stage());
+                              } catch (Exception e) {
+                                  e.printStackTrace();
+                              }
+                              //关闭登陆窗口和加载页
+                              alert_teacher.hide();
+//                              ((Stage) LoginBtn.getScene().getWindow()).hide();
+                          });
+
+                          break;
+                      case 2://医生
+                          Alert alert_doctor = new Alert(Alert.AlertType.INFORMATION);
+                          alert_doctor.initStyle(StageStyle.UNDECORATED);
+                          alert_doctor.setHeaderText(null);
+                          alert_doctor.setContentText(null);
+                          alert_doctor.setDialogPane(dp);
+                          alert_doctor.getDialogPane().getStylesheets()
+                                  .add(getClass().getResource("Main.css").toExternalForm());
+                          alert_doctor.show();
+
+                          Doctor doctor = (Doctor) serverResponse.getData();
+                          Platform.runLater(() -> {
+                              //创建主界面窗口
+                              try {
+                                  ((Stage) LoginBtn.getScene().getWindow()).hide();
+                                  new MainFrame_Doctor(doctor).start(new Stage());
+                              } catch (Exception e) {
+                                  e.printStackTrace();
+                              }
+                              //关闭登陆窗口和加载页
+                              alert_doctor.hide();
+//                              ((Stage) LoginBtn.getScene().getWindow()).hide();
+                          });
+                          break;
+
+                      case 3://商人
+                          Alert alert_retailer = new Alert(Alert.AlertType.INFORMATION);
+                          alert_retailer.initStyle(StageStyle.UNDECORATED);
+                          alert_retailer.setHeaderText(null);
+                          alert_retailer.setContentText(null);
+                          alert_retailer.setDialogPane(dp);
+                          alert_retailer.getDialogPane().getStylesheets()
+                                  .add(getClass().getResource("Main.css").toExternalForm());
+                          alert_retailer.show();
+
+                          Retailer retailer = (Retailer) serverResponse.getData();
+                          Platform.runLater(() -> {
+                              //创建主界面窗口
+                              try {
+                                  ((Stage) LoginBtn.getScene().getWindow()).hide();
+                                  new MainFrame_Retailer(retailer).start(new Stage());
+                              } catch (Exception e) {
+                                  e.printStackTrace();
+                              }
+                              //关闭登陆窗口和加载页
+                              alert_retailer.hide();
+//                              ((Stage) LoginBtn.getScene().getWindow()).hide();
+                          });
+                          break;
+
+                      case 4://管理员
+//                          //加载动画
+//                          AnchorPane loading = new AnchorPane(loadingVBox);
+//                          JFXDialogLayout layout_loading = new JFXDialogLayout();
+//                          layout_loading.setBody(loading);
+//                          DialogPane dp = new DialogPane();
+//                          dp.setContent(loadingVBox);
+                          Alert alert_admin = new Alert(Alert.AlertType.INFORMATION);
+                          alert_admin.initStyle(StageStyle.UNDECORATED);
+                          alert_admin.setHeaderText(null);
+                          alert_admin.setContentText(null);
+                          alert_admin.setDialogPane(dp);
+                          alert_admin.getDialogPane().getStylesheets()
+                                  .add(getClass().getResource("Main.css").toExternalForm());
+                          alert_admin.show();
+
+                          Platform.runLater(() -> {
+                              //创建主界面窗口
+                              try {
+                                  ((Stage) LoginBtn.getScene().getWindow()).hide();
+                                  new MainFrame_Admin().start(new Stage());
+                              } catch (Exception e) {
+                                  e.printStackTrace();
+                              }
+                              //关闭登陆窗口和加载页
+                              alert_admin.hide();
+//                              ((Stage) LoginBtn.getScene().getWindow()).hide();
+                          });
+                          break;
+                  }
+              }
+//								登陆不成功
+              else {
+//            	  JOptionPane.showMessageDialog(null, serverResponse.getErrorMessage());
+                  JFXDialogLayout layout_f = new JFXDialogLayout();
+                  layout_f.setBody(new Label("      登陆失败：" + serverResponse.getErrorMessage()));
+                  JFXAlert<Void> alert_f = new JFXAlert<>((Stage) LoginBtn.getScene().getWindow());
+                  alert_f.setOverlayClose(true);
+                  alert_f.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                  alert_f.setContent(layout_f);
+                  alert_f.initModality(Modality.NONE);
+                  alert_f.show();
+              }
+          }
+      });
+
+
+      SignUpBtn.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+              String idtext = UserNametf.getText();
+              String idstr = new String(idtext);
+              System.out.println("用户ID：" + idstr);
+
+              String pwdtext = PassWordtf.getText();
+              String pwdstr = new String(pwdtext);
+              System.out.println("密码：" + pwdstr);
+
+//							异常事件处理，弹出对话框
+              if(idtext.equals("")) {
+//                  JOptionPane.showMessageDialog(null, "用户名不得为空，请重新输入。");
+                  JFXDialogLayout layout_f = new JFXDialogLayout();
+                  layout_f.setBody(new Label("      用户名不得为空，请重新输入。"));
+                  JFXAlert<Void> alert_f = new JFXAlert<>((Stage) SignUpBtn.getScene().getWindow());
+                  alert_f.setOverlayClose(true);
+                  alert_f.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                  alert_f.setContent(layout_f);
+                  alert_f.initModality(Modality.NONE);
+                  alert_f.show();
+                  return;
+              }else if(pwdtext.equals("")) {
+//                  JOptionPane.showMessageDialog(null, "密码不得为空，请重新输入。");
+                  JFXDialogLayout layout_f = new JFXDialogLayout();
+                  layout_f.setBody(new Label("      密码不得为空，请重新输入。"));
+                  JFXAlert<Void> alert_f = new JFXAlert<>((Stage) SignUpBtn.getScene().getWindow());
+                  alert_f.setOverlayClose(true);
+                  alert_f.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                  alert_f.setContent(layout_f);
+                  alert_f.initModality(Modality.NONE);
+                  alert_f.show();
+                  return;
+              }
+
+//							注册检验
+              Message mes = new Message();
+              int type = -1 ;
+              //用用户名确认身份
+              if(idstr.length()<5) {
+            	  JOptionPane.showMessageDialog(null, "不符合规范的用户名！");
+                  return;
+              }
+              if(idstr.subSequence(0, 4).equals("2131"))
+            	  type = 0;
+              else if(idstr.subSequence(0, 2).equals("00"))
+            	  type = 1;
+              else if(Character.isUpperCase(idstr.charAt(1)))
+            	  type = 2;
+              else if(idstr.subSequence(0, 2).equals("bz"))
+            	  type = 3;
+              else if(idstr.subSequence(0, 5).equals("admin"))
+            	  type = 4;
+              else {
+            	  JOptionPane.showMessageDialog(null, "不符合规范的用户名！");
+                  return;
+              }
+              mes.setUserType(type);
+              SignUp signup = new SignUp();
+              signup.setId(idstr);
+              signup.setPwd(pwdstr);
+              signup.setUserType(type);
+              mes.setData(signup);
+              mes.setMessageType("REGISTER");
+
+              Message serverResponse = client.sendRequestToServer(mes);
+              System.out.println("注册中"+serverResponse.isLastOperState());
+
+//								若注册成功
+              if(serverResponse.isLastOperState()){
+//            	  JOptionPane.showMessageDialog(null, "注册成功");
+                  JFXDialogLayout layout_suc = new JFXDialogLayout();
+                  layout_suc.setBody(new Label("      注册成功！"));
+                  JFXAlert<Void> alert_suc = new JFXAlert<>((Stage) SignUpBtn.getScene().getWindow());
+                  alert_suc.setOverlayClose(true);
+                  alert_suc.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                  alert_suc.setContent(layout_suc);
+                  alert_suc.initModality(Modality.NONE);
+                  alert_suc.show();
+              }
+//								注册不成功
+              else {
+//            	  JOptionPane.showMessageDialog(null, serverResponse.getErrorMessage());
+                  JFXDialogLayout layout_f = new JFXDialogLayout();
+                  layout_f.setBody(new Label("      注册失败：" + serverResponse.getErrorMessage()));
+                  JFXAlert<Void> alert_f = new JFXAlert<>((Stage) SignUpBtn.getScene().getWindow());
+                  alert_f.setOverlayClose(true);
+                  alert_f.setAnimation(JFXAlertAnimation.CENTER_ANIMATION);
+                  alert_f.setContent(layout_f);
+                  alert_f.initModality(Modality.NONE);
+                  alert_f.show();
+              }
+          }
+      });
+    	return pane;
+
+
+    }
+}

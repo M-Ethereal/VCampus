@@ -3,15 +3,9 @@ package client.socket;
 import vo.Message;
 
 import java.io.BufferedInputStream;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -20,7 +14,8 @@ public class Client {
     public Message sendRequestToServer (Message clientRequest ) {
         try
         {
-            Socket socket = new Socket("localhost",19888);
+            //Socket socket = new Socket("192.168.43.81",19888);//192.168.43.81
+            Socket socket = new Socket("localhost",19888);//192.168.43.81
             socket.setSoTimeout(10000);
             ObjectOutputStream request = new ObjectOutputStream(socket.getOutputStream());
             request.writeObject(clientRequest);

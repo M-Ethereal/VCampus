@@ -1,15 +1,20 @@
 package vo;
-
 import java.io.Serializable;
-
-public class LendRecord implements Serializable {
-    private static final long serialVersionUID = 50000;
+import java.sql.*;
+public class LendRecord implements Serializable
+{
+    private static final long serialVersionUID=50000;
     private String RecordID;
     private String RecordStudentID;
     private String RecordBookID;
     private String RecordStartDate;
     private String RecordEndDate;
     private boolean IsReturn;
+    private String RecordBookName;
+    public void setRecordBookName(String name)
+    {
+        RecordBookName=name;
+    }
     public void setRecordID(String ID)
     {
         RecordID=ID;
@@ -33,6 +38,10 @@ public class LendRecord implements Serializable {
     public void setIsReturn(boolean isReturn)
     {
         IsReturn=isReturn;
+    }
+    public String getRecordBookName()
+    {
+        return RecordBookName;
     }
     public String getRecordID()
     {
@@ -66,16 +75,18 @@ public class LendRecord implements Serializable {
         this.RecordBookID=" ";
         this.RecordStartDate=" ";
         this.RecordEndDate=" ";
+        this.RecordBookName=" ";
         this.IsReturn=false;
     }
-    public LendRecord(String RecordID,String RecordStudentID,String RecordBookID,//有参构造函
-                      String RecordStartDate,String RecordEndDate,boolean IsReturn)
+    public LendRecord(LendRecord lend)
     {
-        this.RecordID=RecordID;
-        this.RecordStudentID=RecordStudentID;
-        this.RecordBookID=RecordBookID;
-        this.RecordStartDate=RecordStartDate;
-        this.RecordEndDate=RecordEndDate;
-        this.IsReturn=IsReturn;
+        this.RecordID=lend.RecordID;
+        this.RecordStudentID=lend.RecordStudentID;
+        this.RecordBookID=lend.RecordBookID;
+        this.RecordStartDate=lend.RecordStartDate;
+        this.RecordEndDate=lend.RecordEndDate;
+        this.IsReturn=lend.IsReturn;
+        this.RecordBookName=lend.RecordBookName;
     }
 }
+

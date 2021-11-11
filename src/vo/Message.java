@@ -4,8 +4,9 @@ import java.io.Serializable;
 //与Client、GUI进行交互的过程中需要用到Message对象进行信息的传递
 public class Message implements Serializable {
     private static final long serialVersionUID = 50000;
-    private int userType;
-    private int userId;
+    private int userType;//0-学生 1-老师 2-医生 3-商人 4-管理员
+    private String userId;
+    private String extraMessage;
     private Object data;
     private String messageType;
     private String errorMessage;
@@ -29,11 +30,12 @@ public class Message implements Serializable {
     public void setMessageType(String messageType) {
         this.messageType = messageType;
     }
-
-    public int getUserId() {
+    public String getExtraMessage() { return extraMessage; }
+    public void setExtraMessage(String extraMessage) { this.extraMessage = extraMessage; }
+    public String getUserId() {
         return userId;
     }
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
     public String getErrorMessage() {

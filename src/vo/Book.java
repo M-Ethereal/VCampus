@@ -22,6 +22,10 @@ public class Book implements Serializable {
     {
         BookName=name;
     }
+    public void setBookAuthor(String author)
+    {
+        BookAuthor=author;
+    }
     public void setBookSite(boolean site)
     {
         BookSite=site;
@@ -29,6 +33,10 @@ public class Book implements Serializable {
     public void setBookStatus(boolean status)
     {
         BookStatus=status;
+    }
+    public void setBookTag(String tag)
+    {
+        BookTag=tag;
     }
     public void setBookStar(int star)
     {
@@ -54,6 +62,10 @@ public class Book implements Serializable {
     {
         return BookName;
     }
+    public String getBookAuthor()
+    {
+        return BookAuthor;
+    }
     public boolean getBookSite()
     {
         return BookSite;
@@ -61,6 +73,10 @@ public class Book implements Serializable {
     public boolean getBookStatus()
     {
         return BookStatus;
+    }
+    public String getBookTag()
+    {
+        return BookTag;
     }
     public int getBookStar()
     {

@@ -12,9 +12,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SplitPane;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -23,19 +23,30 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import vo.Doctor;
 import vo.Message;
+import vo.Student;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
 import static javafx.animation.Interpolator.EASE_BOTH;
 
 public class Hospital_tab_home {
+    private Student student;
+    private Hospital_tab_query hospital_tab_query;
     private SplitPane tab_home = new SplitPane();
     private ScrollPane scp_left = new ScrollPane();//选项
     private ScrollPane scp_right = new ScrollPane();//列表
+    private AnchorPane jumpPage = new AnchorPane();//所有跳转页都放这里
+    private AnchorPane docInfoPage = new AnchorPane();//一跳跳转页
+    private TabPane tabPane = new TabPane();//父窗口句柄
+
+    //头像
+//    Image dfemale = new Image("/client/Image/doc_female.png",180, 300,false,true);
+//    ImageView doc_female = new ImageView(dfemale);
+//    Image dmale = new Image("/client/Image/doc_male.png",180, 300,false,true);
+//    ImageView doc_male = new ImageView(dmale);
 
     private double pol0 = 0;
     private double pol1 = 0;
@@ -47,6 +58,29 @@ public class Hospital_tab_home {
     private double wholeHeight = 0;
 
     private ArrayList<Doctor> doctorArrayList = new ArrayList<Doctor>();
+
+    public Hospital_tab_home(Student student, Hospital_tab_query hospital_tab_query, TabPane tabPane){
+        this.student = student;
+        this.hospital_tab_query = hospital_tab_query;
+        this.tabPane = tabPane;
+    }
+
+    //关闭页面
+    public void jumpTool_close(){
+        this.jumpPage.setVisible(false);
+    }
+
+    //开启页面
+    public void jumpTool_open(){
+        this.jumpPage.setVisible(true);
+    }
+
+    //跳转
+    public void Hospital_jump_control(AnchorPane anchorPane){
+        jumpPage.getChildren().clear();
+        jumpPage.getChildren().add(anchorPane);
+        jumpPage.setVisible(true);
+    }
 
     //0-内科 1-外科 2-皮肤科 3-耳鼻喉科 4-口腔 5-眼科 6-心理咨询
     private String checkList(Integer i){
@@ -77,6 +111,7 @@ public class Hospital_tab_home {
         });
         //System.out.println("排序后"+doctorArrayList);
 
+        //不同科室
         Integer dept = 0;
         ArrayList<Node> children0 = new ArrayList<>();
         ArrayList<Node> children1 = new ArrayList<>();
@@ -121,20 +156,33 @@ public class Hospital_tab_home {
             StackPane header = new StackPane();
             String headerColor = getDefaultColor(i % 12);
             header.setStyle("-fx-background-radius: 5 5 0 0; -fx-background-color: " + headerColor);
+
+            //根据性别
+            if(doctorArrayList.get(i).getSex() == 0){
+                Image dfemale = new Image("/client/Image/doc_female.png",180, 200,true,true);
+                ImageView doc_female = new ImageView(dfemale);
+                header.getChildren().add(doc_female);
+            }
+            else {
+                Image dmale = new Image("/client/Image/doc_male.png",180, 200,true,true);
+                ImageView doc_male = new ImageView(dmale);
+                header.getChildren().add(doc_male);
+            }
+
             VBox.setVgrow(header, Priority.ALWAYS);
             StackPane body = new StackPane();
             //body.setMinHeight(Math.random() * 20 + 50);
             body.setMinHeight(90);
             //body的内容
-
             //查看
             //计算评分
             String str = doctorArrayList.get(i).getRenown();
             String[] renownSplit = str.split("/");
-            Integer a = Integer.valueOf(renownSplit[0]).intValue();
-            Integer b = Integer.valueOf(renownSplit[1]).intValue();
+            Double a = Double.valueOf(renownSplit[0]);
+            Double b = Double.valueOf(renownSplit[1]);
             DecimalFormat df = new DecimalFormat("0.00");//格式
-            String renown = df.format((float)a/b);
+            String renown = df.format((double)a/b);
+
             Label docInfo = new Label("医生姓名： " + doctorArrayList.get(i).getName() + "   评分： " + renown + "\n医生职位： "+ doctorArrayList.get(i).getPosition());
             docInfo.setPrefSize(180,80);
             docInfo.setLayoutX(5);
@@ -145,11 +193,18 @@ public class Hospital_tab_home {
             body.setStyle("-fx-background-radius: 0 0 5 5; -fx-background-color: rgb(255,255,255,0.87);");
 
 
+            Doctor doctorTemp = doctorArrayList.get(i);
             //小飞机按钮
             JFXButton button = new JFXButton("");
             //小飞机按钮响应（页面跳转）
             button.addEventHandler(MouseEvent.MOUSE_PRESSED, e->{
                 //要给一个docId的信息
+
+                docInfoPage = new Hospital_jump_docInfo(student, doctorTemp, this, hospital_tab_query, tabPane).docInfo();
+                docInfoPage.setVisible(true);
+                jumpPage.getChildren().clear();
+                jumpPage.getChildren().add(docInfoPage);
+                jumpPage.setVisible(true);
 
             });
 
@@ -220,7 +275,7 @@ public class Hospital_tab_home {
         fp1.setVgap(50);
         fp1.setPrefWidth(720);
         double temp1 = Math.ceil(children1.size() / 3);
-        pol1 = (temp0+1) * 380 + 50 + 50;
+        pol1 = (temp0+1) * 380 + 50 + 50 +5;//+5微调
 
         //wholeHeight = (temp1+1)*380 + 50 + 50;
         FlowPane fp2 = new FlowPane();
@@ -235,10 +290,7 @@ public class Hospital_tab_home {
         fp2.setVgap(50);
         fp2.setPrefWidth(720);
         double temp2 = Math.ceil(children2.size() / 3);
-        System.out.println(children1.size());
-        System.out.println(temp1);
-        System.out.println(pol1);
-        pol2 = pol1 + (temp1+1) * 380 + 50 + 50;
+        pol2 = pol1 + (temp1+1) * 380 + 50 + 50 +5;
 
         FlowPane fp3 = new FlowPane();
         Label l3 = new Label("——耳鼻喉科————————————");
@@ -252,7 +304,7 @@ public class Hospital_tab_home {
         fp3.setVgap(50);
         fp3.setPrefWidth(720);
         double temp3 = Math.ceil(children3.size() / 3);
-        pol3 = pol2 + (temp2+1) * 380 + 50 + 50;
+        pol3 = pol2 + (temp2+1) * 380 + 50 + 50 +5;
 
         FlowPane fp4 = new FlowPane();
         Label l4 = new Label("——口腔科—————————————");
@@ -266,7 +318,7 @@ public class Hospital_tab_home {
         fp4.setVgap(50);
         fp4.setPrefWidth(720);
         double temp4 = Math.ceil(children4.size() / 3);
-        pol4 = pol3 + (temp3+1) * 380 + 50 + 50;
+        pol4 = pol3 + (temp3+1) * 380 + 50 + 50 +5;
 
         FlowPane fp5 = new FlowPane();
         Label l5 = new Label("——眼科——————————————");
@@ -280,7 +332,7 @@ public class Hospital_tab_home {
         fp5.setVgap(50);
         fp5.setPrefWidth(720);
         double temp5 = Math.ceil(children5.size() / 3);
-        pol5 = pol4 + (temp4+1) * 380 + 50 + 50;
+        pol5 = pol4 + (temp4+1) * 380 + 50 + 50 +5;
 
         FlowPane fp6 = new FlowPane();
         Label l6 = new Label("——心理咨询————————————");
@@ -294,16 +346,14 @@ public class Hospital_tab_home {
         fp6.setVgap(50);
         fp6.setPrefWidth(720);
         double temp6 = Math.ceil(children6.size() / 3);
-        pol6 = pol5 + (temp5+1) * 380 + 50 + 50;
-        wholeHeight = pol6 + (temp6+1)*380 + 50 + 50 -580;
+        pol6 = pol5 + (temp5+1) * 380 + 50 + 50 +5;
+        wholeHeight = pol6 + (temp6+1)*380 + 50 + 50 +5 -580;
 
         FlowPane fp = new FlowPane();
         //fp.setPadding(new Insets(30));
         fp.setPrefWidth(720);
         fp.getChildren().addAll(fp0, fp1, fp2, fp3, fp4, fp5, fp6);
 
-        System.out.println(fp0.heightProperty());
-        System.out.println(pol0 +" " +pol1+ " " + pol2 + " "+ pol3);
         return fp;
     }
 
@@ -357,15 +407,12 @@ public class Hospital_tab_home {
     }
 
 
-    private AnchorPane details(String docId){
-        AnchorPane dt = new AnchorPane();
 
+    public Tab tab_home_page(){
+        Tab tab = new Tab();
+        tab.setText("医院主页");
+        AnchorPane ap = new AnchorPane();
 
-        return dt;
-    }
-
-
-    public SplitPane tab_home_page(){
         //#B2DFEE
         VBox vBox_dept = new VBox();
         //AnchorPane vBox_dept = new AnchorPane();
@@ -489,6 +536,13 @@ public class Hospital_tab_home {
         tab_home.getItems().addAll(sp_left,sp_right);
         //tab.setLeftAnchor(scp_right, 330.0);
 
-        return tab_home;
+
+        StackPane sp = new StackPane();//图层
+        sp.getChildren().addAll(tab_home,jumpPage);
+        //ap.getChildren().addAll(tab_home,jumpPage);
+        jumpPage.setVisible(false);
+
+        tab.setContent(sp);
+        return tab;
     }
 }

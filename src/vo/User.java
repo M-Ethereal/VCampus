@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private static final long serialVersionUID = 50000;
-    private String id;
+    private String id;//学生的一卡通号/老师的id/医生的id/商人的id/管理员的id
     private String pwd;
     private int userType;	//0-student  1-teacher  2-doctor  3-retailer  4-admin
 

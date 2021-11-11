@@ -9,6 +9,7 @@ public class Place implements Serializable {
     private String placePosition;
     private String pCampus;
     private Integer placeType; //0-图书馆 1-体育馆 2-教室 3-浴室
+    private Integer pMaximumAvailable;//最大人数上限
 
     public Place() {
         this.setPlaceID(0);
@@ -16,6 +17,7 @@ public class Place implements Serializable {
         this.setPlacePosition("");
         this.setpCampus("");
         this.setPlaceType(0);
+        this.setpMaximumAvailable(1);
     }
 
     public Integer getPlaceID() {
@@ -56,5 +58,13 @@ public class Place implements Serializable {
 
     public void setPlaceType(Integer placeType) {
         this.placeType = placeType;
+    }
+
+    public Integer getpMaximumAvailable() {
+        return pMaximumAvailable;
+    }
+
+    public void setpMaximumAvailable(Integer pMaximumAvailable) {
+        this.pMaximumAvailable = pMaximumAvailable;
     }
 }

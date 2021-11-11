@@ -16,6 +16,7 @@ public class MedicalAdvice implements Serializable {
     private String queryTime;
     private String ansDate;
     private String ansTime;
+    private Boolean isRank;
 
     public MedicalAdvice() {
         this.setqID(0);
@@ -30,6 +31,7 @@ public class MedicalAdvice implements Serializable {
         this.setQueryTime("");
         this.setAnsDate("");
         this.setAnsTime("");
+        this.setRank(false);
     }
 
     public Integer getqID() {
@@ -126,5 +128,13 @@ public class MedicalAdvice implements Serializable {
 
     public void setAnsTime(String ansTime) {
         this.ansTime = ansTime;
+    }
+
+    public Boolean getRank() {
+        return isRank;
+    }
+
+    public void setRank(Boolean rank) {
+        isRank = rank;
     }
 }

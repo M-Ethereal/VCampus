@@ -7,7 +7,6 @@ public class PlaceAppointmentRecord implements Serializable {
     private Integer apID;
     private String startDate;
     private String startTime;
-    private String endDate;
     private String endTime;
     private String placeId;
     private String placeName;
@@ -18,7 +17,6 @@ public class PlaceAppointmentRecord implements Serializable {
         this.setApID(0);
         this.setStartDate("");
         this.setStartTime("");
-        this.setEndDate("");
         this.setEndTime("");
         this.setPlaceId("");
         this.setPlaceName("");
@@ -44,14 +42,6 @@ public class PlaceAppointmentRecord implements Serializable {
 
     public void setStartDate(String startDate) {
         this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
     }
 
     public void setStartTime(String startTime) {

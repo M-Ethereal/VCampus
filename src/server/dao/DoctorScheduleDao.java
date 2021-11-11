@@ -1,49 +1,67 @@
 package server.dao;
 
+import server.exception.RecordAlreadyExistException;
 import vo.DoctorSchedule;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DoctorScheduleDao {
     private DbHelper access = new DbHelper();
     private PreparedStatement stmt = null;
     private ResultSet rs = null;
 
-    public boolean insert(DoctorSchedule ds) throws SQLException {
+    public boolean insert(DoctorSchedule ds) throws RecordAlreadyExistException{
         try
         {
-            String sql = "INSERT INTO DoctorSchedule (sId, docId, scheduleDate, scheduleInWeek, scheduleInDay"
-                    + ds.getsID()
-                    +"' , '"+ ds.getDocId()
+            System.out.println(ds.getDocId() + " " +ds.getScheduleDate() + " " + ds.getScheduleInWeek() + " " + ds.getScheduleInDay());
+            if(queryById(ds.getDocId()).size() != 0)
+            {
+                ArrayList<DoctorSchedule> temp = new ArrayList<DoctorSchedule>();
+                temp = queryById(ds.getDocId());
+                for (int i = 0; i < temp.size(); i++){
+                    DoctorSchedule dsTemp = temp.get(i);
+                    if(ds.getScheduleDate().equals(dsTemp.getScheduleDate()) && ds.getScheduleInWeek().equals(dsTemp.getScheduleInWeek()) && ds.getScheduleInDay().equals(dsTemp.getScheduleInDay())) throw new RecordAlreadyExistException();
+                }
+            }
+            String sql = "INSERT INTO DoctorSchedule (docId, scheduleDate, scheduleInWeek, scheduleInDay) VALUES ( '"
+                    + ds.getDocId()
                     +"' , '"+ ds.getScheduleDate()
                     +"' , '"+ ds.getScheduleInWeek()
                     +"' , '"+ ds.getScheduleInDay()
-                    +" )";
+                    +"' )";
             stmt = access.connection.prepareStatement(sql);
             stmt.executeUpdate();
             return true;
         }
-        catch(SQLException e)
+        catch(RecordAlreadyExistException e)
         {
+            System.out.println("已经有这条记录");
+            e.printStackTrace();
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-//    public boolean delete(DoctorSchedule ds) {
-//        try{
-//            String sql = "DELETE * FROM DoctorSchedule WHERE docId =?";
-//            stmt = access.connection.prepareStatement(sql);
-//            stmt.setString(1, admin.getId());
-//            stmt.executeUpdate();
-//            return true;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
+    public boolean delete(DoctorSchedule ds) {
+        try{
+            String sql = "DELETE * FROM DoctorSchedule WHERE docId =? and scheduleDate=? and scheduleInWeek=? and scheduleInDay=?";
+            stmt = access.connection.prepareStatement(sql);
+            stmt.setString(1, ds.getDocId());
+            stmt.setString(2, ds.getScheduleDate());
+            stmt.setString(3, ds.getScheduleInWeek());
+            stmt.setString(4, ds.getScheduleInDay());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public boolean update(DoctorSchedule ds) {
         try
@@ -64,14 +82,14 @@ public class DoctorScheduleDao {
         return false;
     }
 
-    public DoctorSchedule queryById(String docId) throws SQLException {
+    public ArrayList<DoctorSchedule> queryById(String docId) throws SQLException {
         String sql= "SELECT * FROM DoctorSchedule where docId="+ "'"+ docId +"'";
         stmt = access.connection.prepareStatement(sql);
         rs = stmt.executeQuery();
 
         if(rs.next())
         {
-            return rsToDoctorSchedule();
+            return rsToDoctorScheduleList();
         }
         return null;
     }
@@ -88,6 +106,31 @@ public class DoctorScheduleDao {
             ds.setScheduleInWeek(rs.getString("scheduleInWeek"));
             ds.setScheduleInDay(rs.getString("scheduleInDay"));
             return ds;
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public ArrayList<DoctorSchedule> rsToDoctorScheduleList()
+    {
+        try
+        {
+            ArrayList<DoctorSchedule> list = new ArrayList<DoctorSchedule>();
+            do{
+                DoctorSchedule ds = new DoctorSchedule();
+                ds.setsID(rs.getInt("sID"));
+                ds.setDocId(rs.getString("docId"));
+                ds.setScheduleDate(rs.getString("scheduleDate"));
+                ds.setScheduleInWeek(rs.getString("scheduleInWeek"));
+                ds.setScheduleInDay(rs.getString("scheduleInDay"));
+                list.add(ds);
+            } while (rs.next());
+
+            return list;
+
         }catch(Exception e)
         {
             e.printStackTrace();
